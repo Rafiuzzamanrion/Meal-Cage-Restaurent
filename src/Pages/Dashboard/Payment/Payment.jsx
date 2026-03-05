@@ -1,7 +1,7 @@
-import {Helmet} from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
-import {loadStripe} from "@stripe/stripe-js";
-import {Elements} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import UseCart from "../../../Hooks/UseCart";
 
@@ -14,20 +14,28 @@ const Payment = () => {
 
     // ===== easy way to addition ==========
     // ======= here 0 is initial value =========
-    const total = cart.reduce((sum,item)=> item.price + sum,0 )
+    const total = cart.reduce((sum, item) => item.price + sum, 0)
     const price = parseFloat(total?.toFixed(2))
 
     return (
-        <div className="w-2/3">
+        <div className="w-full max-w-4xl mx-auto px-4 lg:px-8 pb-16">
             <Helmet>
-                <title>MealsCage | Payment</title>
+                <title>MealCage | Payment</title>
             </Helmet>
-            <SectionTitle heading={'payment here'} subHeading={'have a nice day'}></SectionTitle>
-            <h1 className="text-3xl text-center uppercase my-8">Total Amount To Pay : <span className="font-semibold">${price}</span></h1>
-             
-             <Elements stripe={stripePromise}>
-                <CheckoutForm cart={cart} price = {price}></CheckoutForm>
-             </Elements>
+            <SectionTitle heading={'Payment Center'} subHeading={'Complete your order'}></SectionTitle>
+
+            <div className="text-center mb-10"
+                data-aos="fade-down"
+                data-aos-easing="linear"
+                data-aos-duration="600">
+                <h1 className="text-2xl md:text-3xl font-serif text-light tracking-wide">
+                    Total Amount To Pay: <span className="text-primary font-bold ml-2">${price}</span>
+                </h1>
+            </div>
+
+            <Elements stripe={stripePromise}>
+                <CheckoutForm cart={cart} price={price}></CheckoutForm>
+            </Elements>
         </div>
     );
 };

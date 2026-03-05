@@ -1,0 +1,202 @@
+# MealCage — Backend Requirements for Updated & New Features
+
+This document outlines all the backend API changes, new endpoints, and database model updates required to fully support the redesigned MealCage frontend.
+
+---
+
+## 1. Menu System
+
+### 1.1 Dietary Tags on Menu Items
+The frontend Menu page now has dietary filter buttons (Vegan, Vegetarian, Gluten-Free, Organic, Best Sellers). Currently, tags are approximated by category on the frontend — the backend needs to support real tags.
+
+**Schema Change:**
+> Add a `dietaryTags` field to the `menu` collection.
+
+```json
+{
+  "name": "Greek Salad",
+  "category": "salad",
+  "price": 12.99,
+  "recipe": "...",
+  "image": "...",
+  "dietaryTags": ["vegan", "vegetarian", "glutenFree", "organic"]
+}
+```
+
+**New/Updated Endpoints:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/menu?dietaryTag=vegan` | Filter menu items by dietary tag |
+| `PATCH` | `/menu/:id` | Update a menu item (including its dietary tags) — currently only `DELETE` and `POST` exist |
+
+### 1.2 Product Details by ID
+The Product Details page (`/food/:id`) currently uses a workaround: `GET /foods/search?search=<id>`. This is fragile and should be replaced.
+
+**Required Endpoint:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/menu/:id` | Get a single menu item by its MongoDB `_id`. Returns full item object. |
+
+---
+
+## 2. Newsletter Subscription
+
+The Footer now has an email subscription input. Needs a backend endpoint to capture and store subscriber emails.
+
+**New Collection:** `newsletters`
+
+```json
+{
+  "email": "user@example.com",
+  "subscribedAt": "2026-03-05T00:00:00Z"
+}
+```
+
+**New Endpoints:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/newsletter/subscribe` | Save an email subscription. Should validate email format and prevent duplicate entries. Returns `{ success: true }` or an error. |
+| `GET` | `/newsletter/subscribers` | **Admin only.** Returns list of all subscribers with pagination. |
+
+---
+
+## 3. Gift Cards / E-Vouchers
+
+The new `/gift-cards` page allows users to select and purchase digital gift cards. Needs full backend support.
+
+**New Collection:** `giftCards`
+
+```json
+{
+  "code": "MEALCAGE-XXXX-YYYY",
+  "amount": 100,
+  "tier": "Silver",
+  "purchasedBy": "user@email.com",
+  "purchasedAt": "2026-03-05T00:00:00Z",
+  "isRedeemed": false,
+  "redeemedBy": null,
+  "redeemedAt": null
+}
+```
+
+**New Endpoints:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/gift-cards/purchase` | Creates a new gift card record for the authenticated user. Requires `{ amount, tier }` in body. Integrates with payment (Stripe). |
+| `GET` | `/gift-cards/my-cards` | Returns all gift cards purchased by the authenticated user. |
+| `POST` | `/gift-cards/redeem` | Validates and redeems a gift card code. Requires `{ code }`. Applies the credit to the user's account. |
+| `GET` | `/gift-cards` | **Admin only.** Lists all created gift cards. |
+
+---
+
+## 4. Loyalty / Rewards System
+
+The new User Dashboard Rewards page (`/dashboard/rewards`) shows tier status, points balance, and transaction history. This is entirely new.
+
+**New Collection:** `loyaltyPoints`
+
+```json
+{
+  "userEmail": "user@example.com",
+  "points": 1240,
+  "tier": "Gold",
+  "history": [
+    { "action": "Dine In - Table 4", "points": 150, "type": "earn", "date": "..." },
+    { "action": "Redeemed for Discount", "points": -200, "type": "redeem", "date": "..." }
+  ]
+}
+```
+
+**New Endpoints:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/loyalty/my-points` | Returns the authenticated user's points balance, tier, and history. |
+| `POST` | `/loyalty/earn` | Called after a successful order to add points. Requires `{ userEmail, orderId, amount }`. Points formula: e.g., `1 point per $1 spent`. |
+| `POST` | `/loyalty/redeem` | Deduct points for a reward/discount. Requires `{ userEmail, points }`. |
+| `PATCH` | `/loyalty/recalculate-tier` | Internal / triggered by `earn` — recalculates and updates the user's tier (Bronze/Silver/Gold/Platinum) based on total points. |
+
+**Tier Thresholds (suggested):**
+| Tier | Points Required |
+|------|----------------|
+| Bronze | 0–499 |
+| Silver | 500–999 |
+| Gold | 1000–1499 |
+| Platinum | 1500+ |
+
+---
+
+## 5. Booking / Reservation Updates
+
+The Manage Bookings admin page has a **"Deliver"** button per booking that currently has no backend wiring.
+
+**Required Endpoint:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `PATCH` | `/bookingsHistory/:id` | Update a booking's status to `"delivered"`. Body: `{ status: "delivered" }`. Should be admin-only (JWT + role check). |
+
+Also, the **Reservation** form (user dashboard) currently POSTs to the existing endpoint. Verify it stores:
+- `name`, `email`, `phone`, `date`, `time`, `guests`, `specialRequests`
+
+---
+
+## 6. Contact Form
+
+The redesigned Contact page has a message form. If the form does not currently submit to the backend, a new endpoint is required.
+
+**New Collection:** `contactMessages`
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "message": "I'd like to book a private event...",
+  "submittedAt": "2026-03-05T00:00:00Z",
+  "isRead": false
+}
+```
+
+**New Endpoint:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/contact` | Saves a contact form submission to the database. |
+| `GET` | `/contact` | **Admin only.** Returns all contact messages, ordered by newest first. |
+| `PATCH` | `/contact/:id` | **Admin only.** Mark a message as read. Body: `{ isRead: true }`. |
+
+---
+
+## 7. Existing Endpoints to Verify / Harden
+
+These endpoints are used by the frontend and should be verified to be working and properly secured:
+
+| Endpoint | Auth Required | Notes |
+|----------|--------------|-------|
+| `GET /menu` | No | Should support `?category=` and new `?dietaryTag=` query |
+| `POST /menu` | Admin JWT | Add new item |
+| `DELETE /menu/:id` | Admin JWT | Delete item |
+| `GET /carts?email=` | User JWT | Get user's cart |
+| `POST /carts` | User JWT | Add item to cart |
+| `DELETE /carts/:id` | User JWT | Remove item from cart |
+| `POST /create-payment-intent` | User JWT | Stripe payment intent |
+| `POST /payments` | User JWT | Save completed payment |
+| `GET /payments?email=` | User JWT | Get payment history for user |
+| `POST /bookings` | User JWT | Create a new reservation |
+| `GET /bookingsHistory` | Admin JWT | All reservations |
+| `GET /users` | Admin JWT | All users |
+| `POST /users` | No | Create user on sign-up |
+| `PATCH /users/admin/:id` | Admin JWT | Promote user to admin |
+| `DELETE /users/:id` | Admin JWT | Delete a user |
+
+---
+
+## 8. Summary of New Collections
+
+| Collection | Purpose |
+|------------|---------|
+| `newsletters` | Email subscription storage |
+| `giftCards` | Gift card purchase & redemption tracking |
+| `loyaltyPoints` | Per-user points balance & history |
+| `contactMessages` | Contact form submissions |
+
+**Existing collections that need schema updates:**
+- `menu` → Add `dietaryTags: [String]` field
+- `bookingsHistory` → Ensure `status` field exists (for Deliver button)

@@ -9,52 +9,62 @@ const MyCartItem = ({ item }) => {
 
   const handleDelete = (_id) => {
     Swal.fire({
-      title: "Are you want to delete it ?",
+      title: "Are you want to delete it?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#14A44D",
+      confirmButtonColor: "#d4af37",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      background: '#1a1a1a',
+      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`https://meal-cage-server.vercel.app/carts/${_id}`, {
+        axios.delete(`${import.meta.env.VITE_API_BASE_URL}/carts/${_id}`, {
           method: "DELETE",
         })
           .then((data) => {
             if (data.data.deletedCount > 0) {
               refetch();
-              Swal.fire(
-                "Deleted!",
-                "Your item has been deleted successfully",
-                "success"
-              );
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your item has been deleted successfully",
+                icon: "success",
+                background: '#1a1a1a',
+                color: '#f5f5f5'
+              });
             }
           });
       }
     });
   };
+
   return (
-    <div className="card card-side bg-base-100 shadow-xl"
-    data-aos="fade-right"
-        data-aos-easing="linear"
-        data-aos-duration="800">
-      <figure>
+    <div className="card card-side bg-dark-800 border border-white/5 shadow-xl rounded-2xl overflow-hidden group hover:border-white/10 transition-colors duration-300"
+      data-aos="fade-up"
+      data-aos-easing="linear"
+      data-aos-duration="600">
+      <figure className="shrink-0 p-4">
         <img
-          style={{ borderRadius: "0 200px 200px 200px", padding: "15px" }}
-          className="w-[120px] h-[120px] lg:ms-5 md:pr-6 md:ps-6 md:ms-4"
+          style={{ borderRadius: "0 200px 200px 200px" }}
+          className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300 ml-2"
           src={image}
-          alt=""
+          alt={name}
         />
       </figure>
-      <div className="card-body flex flex-row justify-center items-center">
-        <h2 className="card-title">{name}</h2>
-        <p className=" font-bold  text-success mx-6">${price}</p>
-        <button
-          onClick={() => handleDelete(_id)}
-          className="btn btn-circle btn-outline text-error  hover:bg-error"
-        >
-          <RiDeleteBin6Line size={36} />
-        </button>
+      <div className="card-body flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 sm:p-8">
+        <div className="grow">
+          <h2 className="text-2xl font-serif text-light tracking-wide mb-2 group-hover:text-primary transition-colors">{name}</h2>
+          <p className="font-sans font-bold text-primary tracking-widest text-xl">${price}</p>
+        </div>
+        <div className="mt-4 sm:mt-0 opacity-80 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={() => handleDelete(_id)}
+            className="btn btn-circle btn-outline border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
+            title="Delete item"
+          >
+            <RiDeleteBin6Line size={24} />
+          </button>
+        </div>
       </div>
     </div>
   );

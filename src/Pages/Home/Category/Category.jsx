@@ -15,61 +15,64 @@ import { Link } from "react-router-dom";
 
 const Category = () => {
   return (
-    <section
-      data-aos="zoom-in"
-      data-aos-easing="linear"
-      data-aos-duration="800"
-    >
+    <section className="container mx-auto px-4 py-16">
       <SectionTitle
-        heading={"Order online"}
+        heading={"Order Online"}
         subHeading={"From 11:00 am to 10:00 pm"}
       ></SectionTitle>
       <Swiper
         slidesPerView={2}
-        spaceBetween={30}
+        breakpoints={{
+          640: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
+        }}
+        spaceBetween={20}
         navigation
         modules={[Navigation]}
-        className="mySwiper mb-24 mt-24"
+        className="mySwiper mt-12 mb-12"
       >
         <SwiperSlide>
-          <Link to={"/order/salad"}>
-            <img className="w-full rounded-xl" src={img1} alt="" />
-            <h3 className="text-2xl uppercase text-center text-white -mt-20">
-              Salads
-            </h3>
+          <Link to={"/order/salad"} className="group block relative overflow-hidden rounded-xl aspect-[3/4]">
+            <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={img1} alt="Salads" />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex flex-col justify-end p-6">
+              <h3 className="text-2xl md:text-3xl font-serif text-light group-hover:text-primary transition-colors duration-300">Salads</h3>
+            </div>
           </Link>
         </SwiperSlide>
 
         <SwiperSlide>
-          <Link to={"/order/pizza"}>
-            <img className="w-full rounded-xl" src={img2} alt="" />
-            <h3 className="text-2xl uppercase text-center  text-white -mt-20">
-              Pizzas
-            </h3>
+          <Link to={"/order/pizza"} className="group block relative overflow-hidden rounded-xl aspect-[3/4]">
+            <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={img2} alt="Pizzas" />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex flex-col justify-end p-6">
+              <h3 className="text-2xl md:text-3xl font-serif text-light group-hover:text-primary transition-colors duration-300">Pizzas</h3>
+            </div>
           </Link>
         </SwiperSlide>
+
         <SwiperSlide>
-          <Link to={"/order/soups"}>
-            <img className="w-full lg:h-[420px] rounded-xl" src={img3} alt="" />
-            <h3 className="text-2xl uppercase text-center  text-white -mt-20">
-              Soups
-            </h3>
+          <Link to={"/order/soups"} className="group block relative overflow-hidden rounded-xl aspect-[3/4]">
+            <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={img3} alt="Soups" />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex flex-col justify-end p-6">
+              <h3 className="text-2xl md:text-3xl font-serif text-light group-hover:text-primary transition-colors duration-300">Soups</h3>
+            </div>
           </Link>
         </SwiperSlide>
+
         <SwiperSlide>
-          <Link to={"/order/dessert"}>
-            <img className="w-full rounded-xl" src={img4} alt="" />
-            <h3 className="text-2xl uppercase text-center  text-white -mt-20">
-              Desserts
-            </h3>
+          <Link to={"/order/dessert"} className="group block relative overflow-hidden rounded-xl aspect-[3/4]">
+            <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={img4} alt="Desserts" />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex flex-col justify-end p-6">
+              <h3 className="text-2xl md:text-3xl font-serif text-light group-hover:text-primary transition-colors duration-300">Desserts</h3>
+            </div>
           </Link>
         </SwiperSlide>
+
         <SwiperSlide>
-          <Link to={"/order/drinks"}>
-            <img className="w-full rounded-xl " src={img5} alt="" />
-            <h3 className="text-2xl uppercase text-center  text-white -mt-20">
-              drinks
-            </h3>
+          <Link to={"/order/drinks"} className="group block relative overflow-hidden rounded-xl aspect-[3/4]">
+            <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={img5} alt="Drinks" />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent flex flex-col justify-end p-6">
+              <h3 className="text-2xl md:text-3xl font-serif text-light group-hover:text-primary transition-colors duration-300">Drinks</h3>
+            </div>
           </Link>
         </SwiperSlide>
       </Swiper>

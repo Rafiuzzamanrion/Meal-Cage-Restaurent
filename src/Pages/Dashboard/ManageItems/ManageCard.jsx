@@ -10,81 +10,63 @@ const ManageCard = ({ item }) => {
 
   const handleDelete = (_id) => {
     Swal.fire({
-      title: "Do you want to delete it ?",
+      title: "Delete this item?",
+      text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#14A44D",
+      confirmButtonColor: "#d4af37",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      background: '#1a1a1a',
+      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.delete(`/menu/${_id}`).then((data) => {
           if (data.data.deletedCount > 0) {
             refetch();
-            Swal.fire(
-              "Deleted!",
-              `${name} has been deleted successfully`,
-              "success"
-            );
+            Swal.fire({
+              title: "Deleted!",
+              text: `${name} has been deleted successfully`,
+              icon: "success",
+              background: '#1a1a1a',
+              color: '#f5f5f5'
+            });
           }
         });
       }
     });
   };
 
-  //   const handleEdit = (_id) => {
-  //     console.log(_id);
-  // Swal.fire({
-  //     title: "Do you want to Edit it ?",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#14A44D",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, Edit it!",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       axios.delete(`https://meal-cage-server.vercel.app/menu/${_id}`, {
-  //         method: "DELETE",
-  //       })
-  //         .then((data) => {
-  //           if (data.data.deletedCount > 0) {
-  //             refetch();
-  //             Swal.fire(
-  //               "Deleted!",
-  //               `${name} has been Edited successfully`,
-  //               "success"
-  //             );
-  //           }
-  //         });
-  //     }
-  //   });
-  //   };
-
   return (
     <div
       className="w-full"
-      data-aos="fade-right"
+      data-aos="fade-up"
       data-aos-easing="linear"
-      data-aos-duration="800"
+      data-aos-duration="600"
     >
-      <div className="card card-side bg-base-100 shadow-xl">
-        <figure>
-          <img
-            style={{ borderRadius: "0 200px 200px 200px", padding: "15px" }}
-            className="w-[120px] h-[120px] lg:ms-5 md:pr-6 md:ps-6 md:ms-4"
-            src={image}
-            alt=""
-          />
-        </figure>
-        <div className="card-body flex flex-row justify-center items-center">
-          <h2 className="card-title">{name}</h2>
-          <p className=" font-bold  text-teal-500 mx-6">${price}</p>
+      <div className="flex flex-col sm:flex-row items-center justify-between bg-dark-900 border border-white/5 p-4 rounded-2xl shadow-xl hover:border-white/10 transition-colors gap-6 group">
 
+        <div className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto text-center sm:text-left">
+          <figure className="shrink-0">
+            <img
+              className="w-24 h-24 object-cover rounded-xl ring-1 ring-primary/30 group-hover:ring-primary/60 transition-all duration-300"
+              src={image}
+              alt={name}
+            />
+          </figure>
+          <div>
+            <h2 className="text-xl md:text-2xl font-serif text-light tracking-wide mb-1">{name}</h2>
+            <p className="font-bold text-primary tracking-widest text-lg">${price}</p>
+          </div>
+        </div>
+
+        <div className="shrink-0 mt-4 sm:mt-0">
           <button
             onClick={() => handleDelete(_id)}
-            className="btn btn-outline btn-circle text-error border-2 hover:border-none hover:text-black  hover:bg-error"
+            title="Delete Item"
+            className="btn btn-circle btn-outline border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-300 shadow-md"
           >
-            <RiDeleteBin6Line size={36} />
+            <RiDeleteBin6Line size={24} />
           </button>
         </div>
       </div>

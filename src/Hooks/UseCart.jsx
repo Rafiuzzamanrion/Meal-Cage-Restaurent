@@ -18,7 +18,7 @@ const UseCart = () => {
     const {refetch, data: cart =[] } = useQuery({
         queryKey: ['carts',user?.email],
         queryFn: async () => {
-            const res = await axios.get(`https://meal-cage-server.vercel.app/carts?email=${user.email}`,{
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/carts?email=${user.email}`,{
                 headers:{authorization:`bearer ${token}`}
             })
 

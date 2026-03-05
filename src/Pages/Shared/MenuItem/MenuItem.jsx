@@ -1,26 +1,33 @@
+import { Link } from "react-router-dom";
+
 const MenuItem = ({ item }) => {
-  const { name, image, recipe, price } = item;
+  const { name, image, recipe, price, _id } = item;
   return (
-    <div
-      className="card card-side bg-base-100 shadow-xl"
-      data-aos="fade-right"
+    <Link
+      to={`/food/${_id}`}
+      className="flex flex-col sm:flex-row gap-4 bg-transparent p-4 rounded-lg group hover:bg-dark-800/50 transition-colors duration-300 border border-transparent hover:border-white/5 cursor-pointer"
+      data-aos="fade-up"
       data-aos-easing="linear"
-      data-aos-duration="800"
+      data-aos-duration="600"
     >
-      <figure>
+      <figure className="shrink-0 flex justify-center sm:justify-start">
         <img
-          style={{ borderRadius: "0 200px 200px 200px", padding: "15px" }}
-          className="md:w-[120px] h-[120px] lg:ms-5 mr-5 md:pr-6 md:ps-6 md:ms-4"
+          style={{ borderRadius: "0 200px 200px 200px" }}
+          className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] object-cover ring-2 ring-transparent group-hover:ring-primary/30 transition-all duration-300"
           src={image}
-          alt=""
+          alt={name}
         />
       </figure>
-      <div className="card-body">
-        <h2 className="card-title text-teal-500 font-semibold">{name}</h2>
-        <p>{recipe.length < 80 ? <>{recipe}</> : <>{recipe.slice(0, 80)}</>}</p>
-        <p className="text-teal-500">${price}</p>
+      <div className="flex flex-col flex-grow justify-center text-center sm:text-left">
+        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-2 gap-2 sm:gap-0">
+          <h2 className="text-xl font-serif text-light group-hover:text-primary transition-colors tracking-wide uppercase hover:underline">{name} <span className="hidden sm:inline-block text-white/20 mx-2 tracking-tighter">------------------</span></h2>
+          <p className="text-primary font-bold tracking-widest text-lg">${price}</p>
+        </div>
+        <p className="text-light/60 font-sans text-sm leading-relaxed max-w-md mx-auto sm:mx-0">
+          {recipe.length < 80 ? <>{recipe}</> : <>{recipe.slice(0, 80)}...</>}
+        </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

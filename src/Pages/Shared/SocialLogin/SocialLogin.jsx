@@ -19,7 +19,7 @@ const SocialLogin = () => {
            
             const saveUser = {name:loggedInUser.displayName,email:loggedInUser.email}
             console.log(saveUser)
-              fetch('https://meal-cage-server.vercel.app/users',{
+              fetch(`${import.meta.env.VITE_API_BASE_URL}/users`,{
                 method:'POST',
                 headers:{'content-type': 'application/json'},
                 body:JSON.stringify(saveUser)

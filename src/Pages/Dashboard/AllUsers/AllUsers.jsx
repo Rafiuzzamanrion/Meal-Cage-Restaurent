@@ -11,7 +11,7 @@ const AllUsers = () => {
   const { refetch, data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axios.get(`https://meal-cage-server.vercel.app/users`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users`, {
         headers: { authorization: `bearer ${token}` },
       });
 
@@ -21,51 +21,63 @@ const AllUsers = () => {
 
   const handleDelete = (user) => {
     Swal.fire({
-      title: `Are you want to delete ${user.name} ?`,
+      title: `Delete ${user.name}?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#14A44D",
+      confirmButtonColor: "#d4af37",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, delete!",
+      background: '#1a1a1a',
+      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://meal-cage-server.vercel.app/users/${user._id}`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/users/${user._id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
           .then((data) => {
             if (data.deletedCount > 0) {
               refetch();
-              Swal.fire(
-                "Deleted!",
-                `${user.name} has been deleted successfully`,
-                "success"
-              );
+              Swal.fire({
+                title: "Deleted!",
+                text: `${user.name} has been deleted successfully`,
+                icon: "success",
+                background: '#1a1a1a',
+                color: '#f5f5f5'
+              });
             }
           });
       }
     });
   };
-  //   =========== handleDelete end ========
 
   const handleMakeAdmin = (user) => {
     Swal.fire({
-      title: "Are you want to make him Admin ?",
-      icon: "warning",
+      title: "Grant Admin Privileges?",
+      text: `Make ${user.name} an Admin?`,
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#14A44D",
+      confirmButtonColor: "#d4af37",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Make Admin !",
+      confirmButtonText: "Yes, Make Admin!",
+      background: '#1a1a1a',
+      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://meal-cage-server.vercel.app/users/admin/${user._id}`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/users/admin/${user._id}`, {
           method: "PATCH",
         })
           .then((res) => res.json())
           .then((data) => {
             if (data.modifiedCount) {
               refetch();
-              Swal.fire("Updated!", `${user.name} is now an Admin`, "success");
+              Swal.fire({
+                title: "Updated!",
+                text: `${user.name} is now an Admin`,
+                icon: "success",
+                background: '#1a1a1a',
+                color: '#f5f5f5'
+              });
             }
           });
       }
@@ -81,17 +93,19 @@ const AllUsers = () => {
     const admin = { name, email, role };
 
     Swal.fire({
-      title: "Do you want to make him Admin ?",
-      icon: "warning",
+      title: "Grant Admin Privileges?",
+      text: `Make ${name} an Admin?`,
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#14A44D",
+      confirmButtonColor: "#d4af37",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Make Admin !",
+      confirmButtonText: "Yes, Make Admin!",
+      background: '#1a1a1a',
+      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .post(`https://meal-cage-server.vercel.app/new-admin`, admin)
-
+          .post(`${import.meta.env.VITE_API_BASE_URL}/new-admin`, admin)
           .then((data) => {
             if (data.data.insertedId) {
               refetch();
@@ -100,6 +114,8 @@ const AllUsers = () => {
                 title: "Added!",
                 text: `${name} is now an Admin`,
                 icon: "success",
+                background: '#1a1a1a',
+                color: '#f5f5f5'
               });
             } else {
               Swal.fire({
@@ -108,6 +124,8 @@ const AllUsers = () => {
                 title: `${name} is already an Admin`,
                 showConfirmButton: false,
                 timer: 1500,
+                background: '#1a1a1a',
+                color: '#f5f5f5'
               });
             }
           });
@@ -115,53 +133,58 @@ const AllUsers = () => {
     });
   };
   return (
-    <div className="w-full">
+    <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16">
       <Helmet>
-        <title>MealCage | Manage-Users</title>
+        <title>MealCage | Manage Users</title>
       </Helmet>
 
       <div>
-        <h1 className="uppercase text-3xl mt-7 text-center">
-          {" "}
-          total users : {users.length}
+        <h1 className="text-3xl font-serif text-light tracking-widest text-center mt-12 mb-2 uppercase" data-aos="fade-down" data-aos-duration="600">
+          Manage Users
         </h1>
+        <p className="text-center font-sans text-light/60 tracking-wider mb-10" data-aos="fade-down" data-aos-duration="800">
+          Total Users: <span className="text-primary font-bold">{users.length}</span>
+        </p>
+
         <form
           onSubmit={handleAdmin}
-          data-aos="flip-right"
+          data-aos="fade-up"
           data-aos-easing="linear"
           data-aos-duration="800"
         >
-          <div className="flex justify-center">
-            <div className="w-96 bg-green-100 rounded-xl shadow-xl p-8">
-              <div className="form-control w-full max-w-xs ">
+          <div className="flex justify-center mb-16">
+            <div className="w-full max-w-md bg-dark-800 border border-white/5 rounded-2xl shadow-2xl p-8 relative overflow-hidden group hover:border-white/10 transition-colors">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+              <h3 className="text-xl font-serif text-light tracking-wide mb-6 border-b border-white/10 pb-4 text-center">Add New Admin</h3>
+              <div className="form-control w-full mb-4 relative z-10">
                 <label className="label">
-                  <span className="label-text">Name</span>
+                  <span className="label-text text-light/80 font-sans tracking-wide">Name</span>
                 </label>
                 <input
                   name="name"
                   required
                   type="text"
-                  placeholder="Type here"
-                  className="input input-bordered w-full max-w-xs"
+                  placeholder="Admin Name"
+                  className="input bg-dark-900/50 border-white/10 text-light focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans w-full"
                 />
               </div>
-              <div className="form-control w-full max-w-xs">
+              <div className="form-control w-full mb-6 relative z-10">
                 <label className="label">
-                  <span className="label-text">Email</span>
+                  <span className="label-text text-light/80 font-sans tracking-wide">Email</span>
                 </label>
                 <input
                   required
                   name="email"
                   type="email"
-                  placeholder="Type here"
-                  className="input input-bordered w-full max-w-xs"
+                  placeholder="admin@example.com"
+                  className="input bg-dark-900/50 border-white/10 text-light focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans w-full"
                 />
               </div>
-              <div className="flex justify-center mt-4">
+              <div className="flex justify-center relative z-10">
                 <input
-                  className="btn btn-outline hover:bg-teal-400 hover:border-none text-teal-500 border-b-8 border-2 hover:text-black"
+                  className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 uppercase w-full cursor-pointer"
                   type="submit"
-                  value="Make Admin"
+                  value="Grant Access"
                 />
               </div>
             </div>
@@ -169,49 +192,44 @@ const AllUsers = () => {
         </form>
       </div>
 
-      <div className="p-5 rounded-xl shadow-xl ms-2 mt-8">
-        <div
-          className="overflow-x-auto"
-          data-aos="fade-right"
-          data-aos-easing="linear"
-          data-aos-duration="800"
-        >
-          <table className="table">
-            {/* head */}
+      <div className="bg-dark-800 border border-white/5 rounded-2xl shadow-2xl p-6 md:p-8" data-aos="fade-up" data-aos-duration="1000">
+        <div className="overflow-x-auto">
+          <table className="table w-full">
             <thead>
-              <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Action</th>
+              <tr className="border-b border-white/10 text-light font-serif text-lg tracking-wide">
+                <th className="bg-transparent text-center">#</th>
+                <th className="bg-transparent">Name</th>
+                <th className="bg-transparent">Email</th>
+                <th className="bg-transparent text-center">Role</th>
+                <th className="bg-transparent text-center">Action</th>
               </tr>
             </thead>
-            <tbody>
-              {/* row  */}
+            <tbody className="text-light/80 font-sans">
               {users.map((user, index) => (
-                <tr key={user._id}>
-                  <th>{index + 1}</th>
+                <tr key={user._id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <th className="text-center font-normal">{index + 1}</th>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-                  <td>
+                  <td className="text-center">
                     {user.role === "admin" ? (
-                      "admin"
+                      <span className="badge bg-primary/20 text-primary border-primary/30 py-3 px-4 uppercase tracking-widest text-xs font-bold">Admin</span>
                     ) : (
                       <button
                         onClick={() => handleMakeAdmin(user)}
-                        className="btn btn-outline hover:bg-teal-400 hover:border-none text-teal-500 border-b-8 border-2 hover:text-black"
+                        title="Make Admin"
+                        className="btn btn-sm btn-outline rounded-md border-primary text-primary hover:bg-primary hover:text-dark-900 transition-colors"
                       >
-                        <FaUserShield size={35}></FaUserShield>
+                        <FaUserShield size={18}></FaUserShield>
                       </button>
                     )}
                   </td>
-                  <td>
+                  <td className="text-center">
                     <button
                       onClick={() => handleDelete(user)}
-                      className="btn btn-circle btn-outline text-error  hover:bg-error"
+                      title="Delete User"
+                      className="btn btn-circle btn-sm btn-outline border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
                     >
-                      <RiDeleteBin6Line size={36} />
+                      <RiDeleteBin6Line size={18} />
                     </button>
                   </td>
                 </tr>
