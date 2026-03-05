@@ -1,115 +1,66 @@
-# Meal Cage Restaurant - Bistro Boss
+# Meal-Cage Client 🍽️
 
-A full-stack restaurant management system built with React, Firebase, and Stripe integration.
+Meal-Cage is a modern restaurant management platform designed to provide a seamless dining experience for customers and an efficient management interface for administrators.
 
-## Prerequisites
+## 🚀 Features
 
-- Node.js (v14 or higher)
+- **Dynamic Menu**: Browse through categories like Pizza, Dessert, Soups, and Salads with real-time availability.
+- **Authentication**: Secure login and sign-up powered by Firebase.
+- **Cart & Payments**: Add items to your cart and pay securely using Stripe.
+- **User Dashboard**: Track your orders, rewards, and gift cards.
+- **Admin Dashboard**: Manage menu items, user roles, and order fulfillment.
+- **Reviews & Ratings**: Share your dining experiences with the community.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [React](https://reactjs.org/) with [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [DaisyUI](https://daisyui.com/)
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest)
+- **Authentication**: [Firebase](https://firebase.google.com/)
+- **Payments**: [Stripe](https://stripe.com/)
+- **Animations**: [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/)
+
+## 🏗️ Architecture View
+
+```mermaid
+graph TD
+    User((User)) -->|Interacts| UI[React Frontend]
+    UI --> Auth[Firebase Auth]
+    UI -->|API Calls / Axios| API[Meal-Cage Server]
+    UI -->|Payment Processing| Stripe[Stripe API]
+    
+    subgraph Frontend Components
+        UI --> Layouts[Main/Admin Layouts]
+        UI --> Pages[Menu/Dashboard/Cart]
+        UI --> Providers[Auth/Query Providers]
+    end
+    
+    API --> DB[(MongoDB)]
+```
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js (v24.x recommended)
 - npm or yarn
-- Firebase account
-- Stripe account (for payment features)
-- imgbb API key (for image uploads)
 
-## Setup Instructions
+### Installation
 
-### 1. Install Dependencies
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Rafiuzzamanrion/Meal-Cage-Restaurent.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env.local` file in the root and add your credentials (check `.env.example` for required variables).
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-```bash
-npm install
-```
+## 📄 License
 
-### 2. Configure Environment Variables
-
-Create a `.env.local` file in the root directory and add your credentials:
-
-```env
-# Firebase Configuration
-# Get these from Firebase Console: https://console.firebase.google.com/
-VITE_apiKey=your_firebase_api_key_here
-VITE_authDomain=your_project_id.firebaseapp.com
-VITE_projectId=your_project_id_here
-VITE_storageBucket=your_project_id.appspot.com
-VITE_messagingSenderId=your_messaging_sender_id_here
-VITE_appId=your_app_id_here
-
-# Stripe Payment Key
-# Get this from Stripe Dashboard: https://dashboard.stripe.com/apikeys
-VITE_payment_key=your_stripe_publishable_key_here
-
-# Image Upload Token (imgbb API)
-# Get this from imgbb: https://api.imgbb.com/
-VITE_ImageUploadToken=your_imgbb_api_key_here
-```
-
-#### How to get Firebase credentials:
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project or select existing
-3. Go to Project Settings > General
-4. Scroll down to "Your apps" and click on the web icon (</>)
-5. Copy the configuration values
-
-#### How to get Stripe key:
-1. Go to [Stripe Dashboard](https://dashboard.stripe.com/)
-2. Get your **Publishable key** from the API keys section
-
-#### How to get imgbb API key:
-1. Go to [imgbb API](https://api.imgbb.com/)
-2. Sign up and get your API key
-
-### 3. Run the Development Server
-
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:5173/` (or another port if 5173 is in use)
-
-### 4. Build for Production
-
-```bash
-npm run build
-```
-
-### 5. Preview Production Build
-
-```bash
-npm run preview
-```
-
-## Features
-
-- User authentication with Firebase
-- Restaurant menu management
-- Shopping cart functionality
-- Stripe payment integration
-- Admin dashboard
-- User dashboard
-- Image upload with imgbb
-- Responsive design with Tailwind CSS and DaisyUI
-
-## Tech Stack
-
-- **Frontend:** React 18, React Router v6
-- **Styling:** Tailwind CSS, DaisyUI
-- **State Management:** TanStack Query (React Query)
-- **Authentication:** Firebase Auth
-- **Payment:** Stripe
-- **Form Handling:** React Hook Form
-- **Icons:** React Icons
-- **Charts:** Recharts
-- **Notifications:** SweetAlert2
-
-## Troubleshooting
-
-### White Screen Issue
-If you see a white screen, check:
-1. `.env.local` file exists and has all required values
-2. Firebase credentials are correct
-3. Check browser console for errors (F12)
-
-### Port Already in Use
-If port 5173 is in use, Vite will automatically try other ports (5174, 5175, etc.)
-
-## License
-
-This project is for educational purposes.
+This project is licensed under the ISC License.
