@@ -17,7 +17,7 @@ const UseAdmin = () => {
         queryKey: ['isAdmin',user?.email],
         enabled:!loading,
         queryFn: async () => {
-            const res = await axios.get(`https://meal-cage-server.vercel.app/users/admin/${user?.email}`,{
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users/admin/${user?.email}`,{
                 headers:{authorization:`bearer ${token}`}
             })
 

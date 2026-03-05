@@ -14,14 +14,15 @@ const AddItem = () => {
     const formData = new FormData();
     formData.append("image", data.image[0]);
 
-    // ==== add the photo to imagebb for hosting and get a image url ====
     Swal.fire({
-      title: "Do you want to add this item to menu ?",
-      icon: "warning",
+      title: "Add this item to menu?",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#14A44D",
+      confirmButtonColor: "#d4af37",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, add to menu !",
+      confirmButtonText: "Yes, add to menu!",
+      background: '#1a1a1a',
+      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(img_hosting_url, {
@@ -35,7 +36,6 @@ const AddItem = () => {
               const { name, price, category, recipe } = data;
               const newItem = {
                 name,
-                //===== here product id is set for finding all sold price and category so i set a random id generator for unique id ========
                 productId: Math.random().toString(16).slice(2, 16),
                 price: parseFloat(price),
                 category,
@@ -43,17 +43,17 @@ const AddItem = () => {
                 image: imgURL,
               };
               console.log(newItem);
-              // Math.random().toString(16).slice(2, 16)
-              // ============== hosting end ======================
-              // ============== post the menu to database ===============
+
               axiosSecure.post("/menu", newItem).then((data) => {
                 if (data.data.insertedId) {
                   reset();
-                  Swal.fire(
-                    "Added !!",
-                    `${name} has been added to menu successfully`,
-                    "success"
-                  );
+                  Swal.fire({
+                    title: "Added!!",
+                    text: `${name} has been added to menu successfully`,
+                    icon: "success",
+                    background: '#1a1a1a',
+                    color: '#f5f5f5'
+                  });
                 }
               });
             }
@@ -61,95 +61,98 @@ const AddItem = () => {
       }
     });
   };
-  // ===== this is for updating all item in menu just one click====
-  // const handleUpdate = ()=>{
-  //   axios.post('https://meal-cage-server.vercel.app/updateProducts')
-  //   .then((data)=>{
-  //     console.log(data.data)
-  //   })
-  // }
 
   return (
     <div
-      className="md:w-full my-6 md:ps-6"
-      data-aos="fade-right"
+      className="w-full max-w-4xl mx-auto px-4 lg:px-8 pb-16"
+      data-aos="fade-up"
       data-aos-easing="linear"
-      data-aos-duration="800"
+      data-aos-duration="600"
     >
       <Helmet>
-        <title> MealCage | Add item</title>
+        <title>MealCage | Add Item</title>
       </Helmet>
-      <h1 className="text-4xl text-center uppercase">Add a new item</h1>
-      <div className="shadow-xl px-24 py-16 mb-5 rounded-xl">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="form-control w-full max-w-xs">
+
+      <h1 className="text-3xl font-serif text-light tracking-widest text-center mt-12 mb-10 uppercase">
+        Add New Item
+      </h1>
+
+      <div className="bg-dark-800 border border-white/5 rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden group hover:border-white/10 transition-colors">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <form onSubmit={handleSubmit(onSubmit)} className="relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+            <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Recipe Name</span>
+                <span className="label-text text-light/80 font-sans tracking-wide uppercase text-xs font-bold">Recipe Name</span>
               </label>
               <input
                 {...register("name", { required: true, maxLength: 120 })}
                 type="text"
-                placeholder="recipe name "
-                className="input input-accent input-bordered w-full max-w-xs"
+                placeholder="Recipe name"
+                className="input bg-dark-900/50 border-white/10 text-light focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans rounded-none w-full"
               />
             </div>
-            <div className="form-control w-full max-w-xs">
+            <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Price</span>
+                <span className="label-text text-light/80 font-sans tracking-wide uppercase text-xs font-bold">Price</span>
               </label>
               <input
                 {...register("price", { required: true, maxLength: 120 })}
                 type="number"
-                placeholder="price "
-                className="input input-accent input-bordered w-full max-w-xs"
+                step="0.01"
+                placeholder="Price"
+                className="input bg-dark-900/50 border-white/10 text-light focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans rounded-none w-full"
               />
             </div>
-            <div className="form-control w-full max-w-xs">
+            <div className="form-control w-full">
               <label className="label">
-                <span className="label-text font-semibold">Category</span>
+                <span className="label-text text-light/80 font-sans tracking-wide uppercase text-xs font-bold">Category</span>
               </label>
               <select
                 {...register("category", { required: true, maxLength: 120 })}
                 defaultValue={"Pick One"}
-                className="select select-accent select-bordered"
+                className="select bg-dark-900/50 border-white/10 text-light focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans rounded-none w-full"
               >
                 <option disabled>Pick One</option>
-                <option>pizza</option>
-                <option>soup</option>
-                <option>salad</option>
-                <option>drinks</option>
-                <option>dessert</option>
-                <option>desi</option>
+                <option value="pizza">Pizza</option>
+                <option value="soup">Soup</option>
+                <option value="salad">Salad</option>
+                <option value="drinks">Drinks</option>
+                <option value="dessert">Dessert</option>
+                <option value="desi">Desi</option>
               </select>
             </div>
           </div>
-          <div className="form-control">
+
+          <div className="form-control w-full mb-4">
             <label className="label">
-              <span className="label-text">Description</span>
+              <span className="label-text text-light/80 font-sans tracking-wide uppercase text-xs font-bold">Description</span>
             </label>
             <textarea
               {...register("recipe", { required: true, maxLength: 120 })}
-              className="textarea textarea-accent textarea-bordered h-24"
-              placeholder="about item"
+              className="textarea bg-dark-900/50 border-white/10 text-light focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans rounded-none h-24 w-full"
+              placeholder="About item..."
             ></textarea>
           </div>
-          <div className="form-control w-full max-w-xs">
+
+          <div className="form-control w-full mb-8">
             <label className="label">
-              <span className="label-text">Item image</span>
+              <span className="label-text text-light/80 font-sans tracking-wide uppercase text-xs font-bold">Item Image</span>
             </label>
             <input
               {...register("image", { required: true, maxLength: 120 })}
               type="file"
-              className="file-input file-input-accent  file-input-bordered w-full max-w-xs"
+              className="file-input bg-dark-900/50 border-white/10 text-light/80 file:bg-primary/20 file:text-primary file:border-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans rounded-none w-full md:max-w-xs"
             />
           </div>
-          <div className="flex justify-center items-center">
-            <input
-              className="btn text-teal-500 border-2 border-teal-500 hover:bg-teal-500 hover:border-none hover:text-black bg-transparent border-b-8 btn-outline my-6"
+
+          <div className="flex justify-center mt-8">
+            <button
+              className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 uppercase"
               type="submit"
-              value="Add item"
-            />
+            >
+              Add Item
+            </button>
           </div>
         </form>
       </div>

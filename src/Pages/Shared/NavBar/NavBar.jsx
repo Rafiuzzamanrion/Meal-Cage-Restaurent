@@ -31,43 +31,43 @@ const NavBar = () => {
       });
   };
 
+  const navLinkStyle = "hover:text-primary transition-colors duration-300 block px-4 py-2 hover:bg-white/5 rounded-md";
+
   const navItem = (
     <>
-      <li>
-        <Link to={"/"}>HOME</Link>
+      <li className="list-none">
+        <Link to={"/"} className={navLinkStyle}>HOME</Link>
       </li>
-      <li>
-        <Link to={"/menu"}>MENU</Link>
+      <li className="list-none">
+        <Link to={"/menu"} className={navLinkStyle}>MENU</Link>
       </li>
-      <li>
-        <Link to={"/order/salad"}>ORDER FOOD</Link>
+      <li className="list-none">
+        <Link to={"/order/salad"} className={navLinkStyle}>ORDER FOOD</Link>
       </li>
-      <li>
-        <Link to={"/contact"}>CONTACT US</Link>
+      <li className="list-none">
+        <Link to={"/contact"} className={navLinkStyle}>CONTACT</Link>
+      </li>
+      <li className="list-none">
+        <Link to={"/gift-cards"} className={navLinkStyle}>GIFT CARDS</Link>
       </li>
       {!user && (
-        <li>
-          <Link to={"/login"}>Login</Link>
+        <li className="list-none">
+          <Link to={"/login"} className={navLinkStyle}>LOGIN</Link>
         </li>
       )}
-     <li>
+      <li className="list-none">
         {
-        isAdmin?  <Link to={"/dashboard/adminHome"}>DASHBOARD</Link>: (user && <Link to={"/dashboard/userHome"}>ORDER DETAILS</Link>)
+          isAdmin ? <Link to={"/dashboard/adminHome"} className={navLinkStyle}>DASHBOARD</Link> : (user && <Link to={"/dashboard/userHome"} className={navLinkStyle}>ACCOUNT</Link>)
         }
-      </li>
-      
-     
-      <li>
-        <Link></Link>
       </li>
     </>
   );
   return (
-    <div>
-      <div className="navbar mb-3 bg-black  rounded-xl text-white text-center">
+    <>
+      <div className="navbar fixed top-0 z-50 w-full glass-effect text-light transition-all duration-300">
         <div className="navbar-start">
           <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+            <label tabIndex={0} className="btn btn-ghost lg:hidden hover:text-primary transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -85,61 +85,71 @@ const NavBar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-slate-900 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-dark-900/95 backdrop-blur-lg border border-white/10 rounded-box w-52 font-serif text-lg font-medium"
             >
               {navItem}
             </ul>
           </div>
-          <Link to={'/'} className="btn btn-ghost uppercase text-xl">
-          <img className="w-10 h-10 rounded-full" src={img} alt="" /> Meal Cage
+          <Link to={'/'} className="btn btn-ghost normal-case text-2xl font-serif font-bold tracking-wider hover:text-primary transition-colors flex items-center gap-3">
+            {/* Replace with a classier logo if available, or style the text nicely */}
+            <span className="text-primary italic">Meal</span> Cage
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{navItem}</ul>
+          <ul className="menu menu-horizontal px-1 font-sans text-sm tracking-widest font-medium uppercase gap-2">
+            {/* Adding hover effects to links inside navItem requires modifying navItem definition, 
+                but we can apply global styling here or update navItem manually below. */}
+            {navItem}
+          </ul>
         </div>
 
-        {user ? 
-        
-          <div className="navbar-end">
-            <ul className="ms-5 mr-3">
-            <li>
-       {isAdmin?
-         <Link  className="flex flex-row items-center" to={"/dashboard/adminHome"}>
-         <FaShoppingCart size={25} /> 
-          <div className="badge text-teal-500 ms-1">+{cart?.length || 0}</div>
-        </Link>:<Link  className="flex flex-row items-center" to={"/dashboard/myCart"}>
-         <FaShoppingCart size={25} /> 
-          <div className="badge text-teal-500 border-teal-500 ms-1">+{cart?.length || 0}</div>
-        </Link>
-       }
-      </li>
-      
-            </ul>
-            
+        {user ?
+
+          <div className="navbar-end gap-4 pr-4">
+            <div className="flex items-center gap-4">
+              {isAdmin ?
+                <Link className="flex items-center hover:text-primary transition-colors duration-300 relative group" to={"/dashboard/adminHome"}>
+                  <FaShoppingCart size={22} />
+                  <span className="absolute -top-2 -right-3 bg-primary text-dark-900 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] transition-transform group-hover:scale-110">
+                    {cart?.length || 0}
+                  </span>
+                </Link>
+                :
+                <Link className="flex items-center hover:text-primary transition-colors duration-300 relative group" to={"/dashboard/myCart"}>
+                  <FaShoppingCart size={22} />
+                  <span className="absolute -top-2 -right-3 bg-primary text-dark-900 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] transition-transform group-hover:scale-110">
+                    {cart?.length || 0}
+                  </span>
+                </Link>
+              }
+            </div>
+
             <div className="avatar">
-              <div className="w-10 mr-3 rounded-full ring ring-teal-500 ring-offset-base-100 ring-offset-2">
-                <img src={avatar} />
+              <div className="w-10 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2 transition-transform hover:scale-105">
+                <img src={avatar} alt="User Avatar" />
               </div>
             </div>
-           
+
             <button
               onClick={handleLogOut}
-              className="btn btn-outline hover:bg-teal-400 hover:border-none text-teal-500 hover:text-black border-2"
+              className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300"
             >
-              Logout
+              LOGOUT
             </button>
-          
+
           </div>
-         : 
-          <div className="navbar-end">
+          :
+          <div className="navbar-end pr-4">
             <Link to="/login">
-              <button className="btn btn-outline hover:bg-teal-400 hover:border-none text-teal-500 border-2 hover:text-black">Login</button>
+              <button className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300">
+                LOGIN
+              </button>
             </Link>
           </div>
-          
+
         }
       </div>
-    </div>
+    </>
   );
 };
 

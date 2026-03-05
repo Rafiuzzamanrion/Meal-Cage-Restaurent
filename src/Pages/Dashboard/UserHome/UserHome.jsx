@@ -22,7 +22,7 @@ const UserHome = () => {
     queryKey: ["paymentHistory", user.email],
     queryFn: async () => {
       const res = await axios.get(
-        `https://meal-cage-server.vercel.app/paymentHistory?email=${user.email}`
+        `${import.meta.env.VITE_API_BASE_URL}/paymentHistory?email=${user.email}`
       );
       return res.data;
     },
@@ -32,7 +32,7 @@ const UserHome = () => {
     queryKey: ["chart-data-user", user.email],
     queryFn: async () => {
       const res = await axios.get(
-        `https://meal-cage-server.vercel.app/chart-data-user?email=${user.email}`
+        `${import.meta.env.VITE_API_BASE_URL}/chart-data-user?email=${user.email}`
       );
       return res.data;
     },
@@ -65,12 +65,12 @@ const UserHome = () => {
   newArray.push(dessertData);
 
   const soup = items.filter((item) => item.category === "soup");
- const total = soup.reduce((sum, item) => item.price + sum, 0);
- const newTotal = total?.toFixed(2)
+  const total = soup.reduce((sum, item) => item.price + sum, 0);
+  const newTotal = total?.toFixed(2)
   const soupData = {
     count: soup.length,
     category: "soup", // Set the category directly, assuming it's a constant for salad items
-    total:newTotal,
+    total: newTotal,
   };
   newArray.push(soupData);
 
@@ -91,13 +91,11 @@ const UserHome = () => {
 
   const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
   const getPath = (x, y, width, height) => {
-    return `M${x},${y + height}C${x + width / 3},${y + height} ${
-      x + width / 2
-    },${y + height / 3}
+    return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2
+      },${y + height / 3}
         ${x + width / 2}, ${y}
-        C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${
-      y + height
-    } ${x + width}, ${y + height}
+        C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height
+      } ${x + width}, ${y + height}
         Z`;
   };
 
@@ -136,84 +134,81 @@ const UserHome = () => {
   };
 
   return (
-    <div className="">
+    <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16 overflow-hidden">
       <Helmet>
-        <title>MealCage | User-home</title>
+        <title>MealCage | User Home</title>
       </Helmet>
-      <h1 className="text-3xl my-6 ps-24">Hi, {user.displayName}</h1>
-      <div className="grid md:grid-cols-2 gap-4 ps-24">
-        <div className="w-72 h-40 bg-green-200 shadow-xl rounded-xl flex flex-col justify-center items-center"
-        data-aos="flip-right"
-        data-aos-easing="linear"
-        data-aos-duration="800">
-          <h1 className="text-center items-center">
-            <FaSackDollar size={40} />
+
+      <div className="mt-12 mb-10 text-center md:text-left" data-aos="fade-right" data-aos-duration="800">
+        <h1 className="text-3xl md:text-5xl font-serif text-light tracking-wide">
+          Welcome back, <span className="text-primary italic">{user.displayName}</span>
+        </h1>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="bg-dark-800 border border-white/5 shadow-2xl shadow-black/50 rounded-2xl flex flex-col justify-center items-center p-8 group hover:border-white/10 transition-colors"
+          data-aos="fade-up"
+          data-aos-duration="600">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <FaSackDollar size={32} className="text-primary" />
+          </div>
+          <h3 className="text-sm font-sans text-light/60 tracking-widest uppercase mb-1">Total Spent</h3>
+          <h1 className="text-4xl md:text-5xl font-sans font-bold text-light">
+            <span className="text-primary text-2xl align-top mr-1">$</span>
+            {parseFloat(totalSpent?.toFixed(2))}
           </h1>
-          <h1 className="text-4xl font-bold text-center items-center">
-            {" "}
-            ${parseFloat(totalSpent?.toFixed(2))}
-          </h1>
-          <h3 className="text-xl font-semibold text-center uppercase">
-            Total Spent
-          </h3>
         </div>
-        <div className="w-72 h-40 bg-red-200 shadow-xl rounded-xl flex flex-col justify-center items-center"
-        data-aos="flip-right"
-        data-aos-easing="linear"
-        data-aos-duration="800">
-          <h1 className="text-center items-center">
-            <PiBowlFoodFill size={40} />
-          </h1>
-          <h1 className="text-4xl font-bold text-center items-center">
-            {" "}
+
+        <div className="bg-dark-800 border border-white/5 shadow-2xl shadow-black/50 rounded-2xl flex flex-col justify-center items-center p-8 group hover:border-white/10 transition-colors"
+          data-aos="fade-up"
+          data-aos-duration="800">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <PiBowlFoodFill size={32} className="text-primary" />
+          </div>
+          <h3 className="text-sm font-sans text-light/60 tracking-widest uppercase mb-1">Items Ordered</h3>
+          <h1 className="text-4xl md:text-5xl font-sans font-bold text-light">
             {totalQuantity}
           </h1>
-          <h3 className="text-xl font-semibold text-center uppercase">
-            brought foods
-          </h3>
         </div>
       </div>
 
-      {/* ================ bar chart ================ */}
+      {/* ================ charts ================ */}
+      <h2 className="text-2xl font-serif text-light mt-16 mb-8 border-b border-white/10 pb-4">Your Order Analytics</h2>
 
-      <div className=" mt-16">
-        <div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-dark-800 border border-white/5 p-6 rounded-2xl shadow-2xl overflow-x-auto flex justify-center items-center" data-aos="fade-up" data-aos-duration="600">
           <BarChart
-            width={500}
+            width={400}
             height={300}
             data={newArray}
-            margin={{
-              top: 30,
-              right: 20,
-
-              bottom: 5,
-            }}
+            margin={{ top: 30, right: 20, bottom: 5 }}
+            className="text-white"
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="category" />
-            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+            <XAxis dataKey="category" stroke="#d4af37" />
+            <YAxis stroke="#f5f5f5" />
             <Bar
               dataKey="total"
-              fill="#8884d8"
+              fill="#d4af37"
               shape={<TriangleBar />}
-              label={{ position: "top" }}
+              label={{ position: "top", fill: '#f5f5f5' }}
             >
               {newArray.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index % 20]} />
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Bar>
           </BarChart>
         </div>
 
-        <div>
-          <PieChart width={400} height={400}>
+        <div className="bg-dark-800 border border-white/5 p-6 rounded-2xl shadow-2xl flex justify-center items-center" data-aos="fade-up" data-aos-duration="800">
+          <PieChart width={300} height={300}>
             <Pie
               data={newArray}
               cx="50%"
               cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
-              outerRadius={80}
+              outerRadius={100}
               fill="#8884d8"
               dataKey="count"
             >

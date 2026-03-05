@@ -1,0 +1,26 @@
+
+> meal-cage-client@0.0.0 build
+> vite build
+
+[36mvite v4.5.0 [32mbuilding for production...[36m[39m
+transforming...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+╭── 🌼[35m daisyUI 3.9.4 [0mhttps://daisyui.com
+│
+├── [2m1[0m theme is enabled. How to add more themes:
+│   https://daisyui.com/docs/themes
+│
+╰── [32m💚 Support daisyUI project[0m: https://opencollective.com/daisyui
+
+[32m✓[39m 90 modules transformed.
+[32m✓ built in 1.24s[39m
+[31mCould not resolve "../../../Hooks/UseAuth" from "src/Pages/Menu/ProductDetails/ProductDetails.jsx"[39m
+file: [36mC:/Users/rafiu/Downloads/Meal-Cage-Restaurent-main/Meal-Cage-Restaurent-main/src/Pages/Menu/ProductDetails/ProductDetails.jsx[39m
+[31merror during build:
+RollupError: Could not resolve "../../../Hooks/UseAuth" from "src/Pages/Menu/ProductDetails/ProductDetails.jsx"
+    at error (file:///C:/Users/rafiu/Downloads/Meal-Cage-Restaurent-main/Meal-Cage-Restaurent-main/node_modules/rollup/dist/es/shared/node-entry.js:2287:30)
+    at ModuleLoader.handleInvalidResolvedId (file:///C:/Users/rafiu/Downloads/Meal-Cage-Restaurent-main/Meal-Cage-Restaurent-main/node_modules/rollup/dist/es/shared/node-entry.js:24860:24)
+    at file:///C:/Users/rafiu/Downloads/Meal-Cage-Restaurent-main/Meal-Cage-Restaurent-main/node_modules/rollup/dist/es/shared/node-entry.js:24822:26[39m

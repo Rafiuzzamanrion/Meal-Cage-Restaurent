@@ -7,24 +7,24 @@ import { AuthContext } from "../../../Providers/AuthProvider";
 import axios from "axios";
 
 
-const CheckoutForm = ({ price,cart }) => {
+const CheckoutForm = ({ price, cart }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useContext(AuthContext);
- 
-  
+
+
   const [clientSecret, setClientSecret] = useState();
 
   useEffect(() => {
-    axios.post("https://meal-cage-server.vercel.app/create-payment-intent", {
-       price
+    axios.post(`${import.meta.env.VITE_API_BASE_URL}/create-payment-intent`, {
+      price
     })
-   
-    .then((res) => {
-      console.log(res.data.clientSecret);
-      setClientSecret(res.data.clientSecret);
-    })
-    .catch((error) => {
+
+      .then((res) => {
+        console.log(res.data.clientSecret);
+        setClientSecret(res.data.clientSecret);
+      })
+      .catch((error) => {
         console.error("Axios Error:", error);
       });
   }, []);
@@ -60,7 +60,7 @@ const CheckoutForm = ({ price,cart }) => {
       console.log("payment method", paymentMethod);
     }
 
-    const {paymentIntent, error: confirmError } =
+    const { paymentIntent, error: confirmError } =
       await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: card,
@@ -70,52 +70,53 @@ const CheckoutForm = ({ price,cart }) => {
           },
         },
       });
-    if(confirmError){
-        console.log(confirmError)
-        Swal.fire({
-            position: "top",
-            icon: "error",
-            title: `${confirmError.message}`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-    } 
-    if(paymentIntent.status === 'succeeded'){
-     
-        Swal.fire({
-            position: "top",
-            icon: "success",
-            title: `Your payment has been received`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-
-          const payment = {email:user?.email,transactionId:paymentIntent.id,
-            price,
-            date:Date(),
-            status:'service pending',
-            quantity:cart.length,
-            itemsName:cart.map(item => item.name),
-            cartItems:cart.map(item => item._id),
-            foodId:cart.map(item => item.foodId),
-        }
-            
-        axios.post('https://meal-cage-server.vercel.app/payments',payment)
-        .then(res=>{
-            if(res.data.insertResult.insertedId){
-                Swal.fire({
-                    position: "top",
-                    icon: "success",
-                    title: `payment ifo saved successfully`,
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-            }
-        })
-       
-        
+    if (confirmError) {
+      console.log(confirmError)
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: `${confirmError.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
-    
+    if (paymentIntent.status === 'succeeded') {
+
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: `Your payment has been received`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      const payment = {
+        email: user?.email, transactionId: paymentIntent.id,
+        price,
+        date: Date(),
+        status: 'service pending',
+        quantity: cart.length,
+        itemsName: cart.map(item => item.name),
+        cartItems: cart.map(item => item._id),
+        foodId: cart.map(item => item.foodId),
+      }
+
+      axios.post(`${import.meta.env.VITE_API_BASE_URL}/payments`, payment)
+        .then(res => {
+          if (res.data.insertResult.insertedId) {
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: `payment ifo saved successfully`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        })
+
+
+    }
+
 
 
 
@@ -125,33 +126,41 @@ const CheckoutForm = ({ price,cart }) => {
 
 
   };
-  
+
   return (
-    <div className="bg-base-100 w-full p-12 rounded-xl shadow-xl">
-      <form onSubmit={handleSubmit}>
-        <CardElement
-          options={{
-            style: {
-              base: {
-                fontSize: "25px",
-                color: "#332D2D",
-                "::placeholder": {
-                  color: "#332D2D",
+    <div className="bg-dark-800 border border-white/10 w-full p-8 md:p-12 rounded-2xl shadow-2xl shadow-black/50 transition-all"
+      data-aos="fade-up"
+      data-aos-easing="linear"
+      data-aos-duration="800">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+        <div className="bg-dark-900/50 p-4 border border-white/5 rounded-lg">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "18px",
+                  color: "#f8fafc", // slate-50
+                  fontFamily: '"Inter", sans-serif',
+                  "::placeholder": {
+                    color: "#94a3b8", // slate-400
+                  },
+                  iconColor: "#d4af37", // primary
+                },
+                invalid: {
+                  color: "#ef4444", // red-500
+                  iconColor: "#ef4444",
                 },
               },
-              invalid: {
-                color: "#DC4C64",
-              },
-            },
-          }}
-        />
-        <div className=" flex">
+            }}
+          />
+        </div>
+        <div className="flex justify-end">
           <button
-            className="btn btn-success btn-outline border-b-8 mt-6 items-center"
+            className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 uppercase w-full md:w-auto"
             type="submit"
             disabled={!stripe || !clientSecret}
           >
-            Pay
+            Process Payment
           </button>
         </div>
       </form>
