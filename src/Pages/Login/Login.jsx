@@ -1,3 +1,9 @@
+import { useContext, useState } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import bg from '../../assets/others/authentication2.png'
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
 
 
@@ -42,7 +48,7 @@ const Login = () => {
       <Helmet>
         <title>MealCage | Login</title>
       </Helmet>
-      <div className="hero min-h-screen bg-dark-900">
+      <div className="hero min-h-screen bg-dark-900 pt-24 pb-12">
         <div className="hero-content flex-col md:flex-row gap-8 lg:gap-16">
           <div className="text-center md:w-1/2" data-aos="fade-right" data-aos-duration="1000">
 

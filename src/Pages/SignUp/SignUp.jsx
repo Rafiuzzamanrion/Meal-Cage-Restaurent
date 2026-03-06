@@ -83,7 +83,7 @@ const SignUp = () => {
   }
   return (
 
-    <div className="min-h-screen bg-dark-900 pb-12 transition-all">
+    <div className="min-h-screen bg-dark-900 pt-24 pb-12 transition-all">
       <Helmet>
         <title>MealCage | Sign up</title>
       </Helmet>
