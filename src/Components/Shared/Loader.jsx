@@ -2,7 +2,7 @@ import React from 'react';
 
 const Loader = () => {
     return (
-        <div className="min-h-[80vh] w-full flex flex-col justify-center items-center bg-dark-900 overflow-hidden relative">
+        <div className="fixed inset-0 z-[999] flex flex-col justify-center items-center bg-dark-900 overflow-hidden">
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[100px] pointer-events-none animate-pulse" />
 
