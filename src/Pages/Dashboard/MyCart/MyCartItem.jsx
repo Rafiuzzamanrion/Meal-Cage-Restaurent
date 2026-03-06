@@ -1,7 +1,8 @@
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Swal from "sweetalert2";
 import UseCart from "../../../Hooks/UseCart";
 import axios from "axios";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const MyCartItem = ({ item }) => {
   const { name, image, price, _id } = item;
@@ -25,13 +26,7 @@ const MyCartItem = ({ item }) => {
           .then((data) => {
             if (data.data.deletedCount > 0) {
               refetch();
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your item has been deleted successfully",
-                icon: "success",
-                background: '#1a1a1a',
-                color: '#f5f5f5'
-              });
+              toast.success("Item removed from cart!", { theme: "dark" });
             }
           });
       }

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import UseMenu from "../../../Hooks/UseMenu";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import { toast } from "react-toastify";
 
 const ManageCard = ({ item }) => {
   const { name, image, price, _id } = item;
@@ -26,13 +27,7 @@ const ManageCard = ({ item }) => {
         axiosSecure.delete(`/menu/${_id}`).then((data) => {
           if (data.data.deletedCount > 0) {
             refetch();
-            Swal.fire({
-              title: "Deleted!",
-              text: `${name} has been deleted successfully`,
-              icon: "success",
-              background: '#1a1a1a',
-              color: '#f5f5f5'
-            });
+            toast.success(`${name} deleted successfully!`, { theme: "dark" });
           }
         });
       }
