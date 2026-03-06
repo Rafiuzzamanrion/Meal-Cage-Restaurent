@@ -2,9 +2,14 @@ import { Helmet } from "react-helmet-async";
 import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import UseMenu from "../../../Hooks/UseMenu";
 import ManageCard from "./ManageCard";
+import Loader from "../../../Components/Shared/Loader";
 
 const ManageItems = () => {
   const [menu] = UseMenu();
+
+  if (!menu || menu.length === 0) {
+    return <Loader />;
+  }
 
   return (
     <div

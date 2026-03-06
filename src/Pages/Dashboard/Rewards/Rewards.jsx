@@ -1,10 +1,12 @@
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { Helmet } from "react-helmet-async";
 import { FaStar, FaMedal, FaTrophy, FaCrown, FaGift } from "react-icons/fa";
 import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import Swal from "sweetalert2";
+import Loader from "../../../Components/Shared/Loader";
+
 
 const tiers = [
     { name: "Bronze", min: 0, icon: <FaMedal className="text-stone-400" />, color: "text-stone-400" },
@@ -47,14 +49,12 @@ const getTierIcon = (tier) => {
 const Rewards = () => {
     const { user } = useContext(AuthContext);
     const [redeeming, setRedeeming] = useState(false);
+    const [axiosSecure] = UseAxiosSecure();
 
     const { data: rewardData, isLoading, refetch } = useQuery({
         queryKey: ['loyalty', user?.email],
         queryFn: async () => {
-            const token = localStorage.getItem('access-token');
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/loyalty/my-points`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await axiosSecure.get('/loyalty/my-points');
             return res.data;
         },
         enabled: !!user?.email,
@@ -76,10 +76,8 @@ const Rewards = () => {
 
         setRedeeming(true);
         try {
-            const token = localStorage.getItem('access-token');
-            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/loyalty/redeem`,
-                { userEmail: user.email, points: parseInt(pointsToRedeem) },
-                { headers: { Authorization: `Bearer ${token}` } }
+            await axiosSecure.post('/loyalty/redeem',
+                { userEmail: user.email, points: parseInt(pointsToRedeem) }
             );
             refetch();
             Swal.fire({ title: 'Redeemed!', text: `${pointsToRedeem} points have been redeemed.`, icon: 'success', background: '#1a1a1a', color: '#f5f5f5', confirmButtonColor: '#d4af37' });
@@ -90,7 +88,7 @@ const Rewards = () => {
         }
     };
 
-    if (isLoading) return <div className="min-h-screen flex justify-center items-center"><span className="loading loading-bars loading-lg text-primary" /></div>;
+    if (isLoading) return <Loader />;
 
     const points = rewardData?.points || 0;
     const tier = rewardData?.tier || 'Bronze';

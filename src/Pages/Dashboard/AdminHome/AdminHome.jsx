@@ -1,22 +1,23 @@
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { FaSackDollar, FaUser } from 'react-icons/fa6'
 import { HiTemplate } from "react-icons/hi";
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from 'recharts';
-
 import { PieChart, Pie } from 'recharts';
 import { Helmet } from "react-helmet-async";
+import Loader from "../../../Components/Shared/Loader";
 
 const AdminHome = () => {
   const { user } = useContext(AuthContext);
+  const [axiosSecure] = UseAxiosSecure();
 
   const { data: states = {} } = useQuery({
     queryKey: ["admin-states"],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin-states`);
+      const res = await axiosSecure.get("/admin-states");
       return res.data;
     },
   });
@@ -25,7 +26,7 @@ const AdminHome = () => {
   const { data: items = [] } = useQuery({
     queryKey: ["chart-data"],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/chart-data`);
+      const res = await axiosSecure.get("/chart-data");
       return Array.isArray(res.data) ? res.data : [];
     },
   });
@@ -110,6 +111,9 @@ const AdminHome = () => {
       </text>
     );
   };
+  if (Object.keys(states).length === 0 || items.length === 0) {
+    return <Loader />;
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16 overflow-hidden">
@@ -133,7 +137,7 @@ const AdminHome = () => {
           <h3 className="text-xs md:text-sm font-sans text-light/60 tracking-widest uppercase mb-1">Revenue</h3>
           <h1 className="text-3xl md:text-4xl font-sans font-bold text-light">
             <span className="text-primary text-xl align-top mr-1">$</span>
-            {parseFloat(states?.revenue?.toFixed(2))}
+            {parseFloat(states?.revenue || 0).toFixed(2)}
           </h1>
         </div>
 

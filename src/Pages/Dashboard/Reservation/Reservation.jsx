@@ -1,8 +1,9 @@
-import axios from "axios";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 
 const Reservation = () => {
+  const [axiosSecure] = UseAxiosSecure();
 
 
   const handleReserve = (event) => {
@@ -28,7 +29,7 @@ const Reservation = () => {
       color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post(`${import.meta.env.VITE_API_BASE_URL}/reservation`, data)
+        axiosSecure.post("/reservation", data)
           .then(res => {
             if (res.data.insertedId) {
               Swal.fire({

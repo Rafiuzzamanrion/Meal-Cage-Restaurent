@@ -1,18 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import HistoryCard from "./HistoryCard";
 import { Helmet } from "react-helmet-async";
+import Loader from "../../../Components/Shared/Loader";
 
 
 
 const PaymentHistory = () => {
     const { user } = useContext(AuthContext)
+    const [axiosSecure] = UseAxiosSecure();
     const { data: payment = [] } = useQuery({
         queryKey: ['paymentHistory', user.email],
         queryFn: async () => {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/paymentHistory?email=${user.email}`);
+            const res = await axiosSecure.get(`/paymentHistory?email=${user.email}`);
             return res.data;
         },
     })
@@ -22,6 +24,10 @@ const PaymentHistory = () => {
 
 
 
+
+    if (payments.length === 0) {
+        return <Loader />;
+    }
 
     return (
         <div className="w-full max-w-4xl mx-auto px-4 lg:px-8 pb-16">

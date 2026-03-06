@@ -1,17 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import BookingCard from "./BookingCard";
 import { Helmet } from "react-helmet-async";
+import Loader from "../../../Components/Shared/Loader";
 
 
 const ManageBookings = () => {
+    const [axiosSecure] = UseAxiosSecure();
     const { data: bookings = [], refetch } = useQuery({
         queryKey: ['bookingsHistory'],
         queryFn: async () => {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/bookingsHistory`);
+            const res = await axiosSecure.get('/bookingsHistory');
             return res.data;
         }
     });
+
+    if (bookings.length === 0) {
+        return <Loader />;
+    }
 
     return (
         <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16"

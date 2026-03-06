@@ -3,11 +3,16 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useQueryClient } from "@tanstack/react-query";
 
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+
 const BookingCard = ({ booking }) => {
-    const { _id, email, price, quantity, status } = booking;
+    const { _id, email, price, quantity, guests, status } = booking;
+    const displayQuantity = quantity || guests || 0;
+    const displayPrice = price || 0;
     const [currentStatus, setCurrentStatus] = useState(status || 'pending');
     const [delivering, setDelivering] = useState(false);
     const queryClient = useQueryClient();
+    const [axiosSecure] = UseAxiosSecure();
 
     const handleDeliver = async () => {
         if (currentStatus === 'delivered') return;
@@ -28,11 +33,9 @@ const BookingCard = ({ booking }) => {
 
         setDelivering(true);
         try {
-            const token = localStorage.getItem('access-token');
-            const res = await axios.patch(
-                `${import.meta.env.VITE_API_BASE_URL}/bookingsHistory/${_id}`,
-                { status: 'delivered' },
-                { headers: { Authorization: `Bearer ${token}` } }
+            const res = await axiosSecure.patch(
+                `/bookingsHistory/${_id}`,
+                { status: 'delivered' }
             );
             if (res.data?.status === 'delivered' || res.status === 200) {
                 setCurrentStatus('delivered');
@@ -64,7 +67,7 @@ const BookingCard = ({ booking }) => {
                     </div>
                     <div className="flex justify-between items-center border-b border-white/5 pb-3">
                         <span className="text-light/60 text-xs font-bold uppercase tracking-widest">Quantity</span>
-                        <span className="text-light font-sans font-bold">{quantity}</span>
+                        <span className="text-light font-sans font-bold">{displayQuantity}</span>
                     </div>
                     <div className="flex justify-between items-center border-b border-white/5 pb-3">
                         <span className="text-light/60 text-xs font-bold uppercase tracking-widest">Status</span>
@@ -74,7 +77,7 @@ const BookingCard = ({ booking }) => {
                     </div>
                     <div className="flex justify-between items-center pt-2">
                         <span className="text-light/60 text-xs font-bold uppercase tracking-widest relative top-1">Price</span>
-                        <span className="text-primary font-bold text-2xl tracking-wider">${price}</span>
+                        <span className="text-primary font-bold text-2xl tracking-wider">${displayPrice}</span>
                     </div>
                 </div>
 

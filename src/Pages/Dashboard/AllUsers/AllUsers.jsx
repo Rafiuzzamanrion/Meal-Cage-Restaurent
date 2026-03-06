@@ -6,15 +6,15 @@ import { FaUserShield } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
 
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import Loader from "../../../Components/Shared/Loader";
+
 const AllUsers = () => {
-  const token = localStorage.getItem("access-token");
+  const [axiosSecure] = UseAxiosSecure();
   const { refetch, data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users`, {
-        headers: { authorization: `bearer ${token}` },
-      });
-
+      const res = await axiosSecure.get("/users");
       return res.data;
     },
   });
@@ -31,12 +31,9 @@ const AllUsers = () => {
       color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/users/${user._id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
+        axiosSecure.delete(`/users/${user._id}`)
           .then((data) => {
-            if (data.deletedCount > 0) {
+            if (data.data.deletedCount > 0) {
               refetch();
               Swal.fire({
                 title: "Deleted!",
@@ -64,12 +61,9 @@ const AllUsers = () => {
       color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/users/admin/${user._id}`, {
-          method: "PATCH",
-        })
-          .then((res) => res.json())
+        axiosSecure.patch(`/users/admin/${user._id}`)
           .then((data) => {
-            if (data.modifiedCount) {
+            if (data.data.modifiedCount) {
               refetch();
               Swal.fire({
                 title: "Updated!",
@@ -104,8 +98,8 @@ const AllUsers = () => {
       color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .post(`${import.meta.env.VITE_API_BASE_URL}/new-admin`, admin)
+        axiosSecure
+          .post("/new-admin", admin)
           .then((data) => {
             if (data.data.insertedId) {
               refetch();
@@ -132,6 +126,9 @@ const AllUsers = () => {
       }
     });
   };
+  if (users.length === 0) {
+    return <Loader />;
+  }
   return (
     <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16">
       <Helmet>

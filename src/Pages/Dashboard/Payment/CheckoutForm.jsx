@@ -7,16 +7,20 @@ import { AuthContext } from "../../../Providers/AuthProvider";
 import axios from "axios";
 
 
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+
+
 const CheckoutForm = ({ price, cart }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useContext(AuthContext);
+  const [axiosSecure] = UseAxiosSecure();
 
 
   const [clientSecret, setClientSecret] = useState();
 
   useEffect(() => {
-    axios.post(`${import.meta.env.VITE_API_BASE_URL}/create-payment-intent`, {
+    axiosSecure.post("/create-payment-intent", {
       price
     })
 
@@ -27,7 +31,7 @@ const CheckoutForm = ({ price, cart }) => {
       .catch((error) => {
         console.error("Axios Error:", error);
       });
-  }, []);
+  }, [axiosSecure, price]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -101,7 +105,7 @@ const CheckoutForm = ({ price, cart }) => {
         foodId: cart.map(item => item.foodId),
       }
 
-      axios.post(`${import.meta.env.VITE_API_BASE_URL}/payments`, payment)
+      axiosSecure.post("/payments", payment)
         .then(res => {
           if (res.data.insertResult.insertedId) {
             Swal.fire({

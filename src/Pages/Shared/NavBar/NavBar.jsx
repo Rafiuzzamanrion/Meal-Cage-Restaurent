@@ -50,11 +50,7 @@ const NavBar = () => {
       <li className="list-none">
         <Link to={"/gift-cards"} className={navLinkStyle}>GIFT CARDS</Link>
       </li>
-      {!user && (
-        <li className="list-none">
-          <Link to={"/login"} className={navLinkStyle}>LOGIN</Link>
-        </li>
-      )}
+
       <li className="list-none">
         {
           isAdmin ? <Link to={"/dashboard/adminHome"} className={navLinkStyle}>DASHBOARD</Link> : (user && <Link to={"/dashboard/userHome"} className={navLinkStyle}>ACCOUNT</Link>)

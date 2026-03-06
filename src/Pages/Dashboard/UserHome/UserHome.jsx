@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { FaSackDollar } from "react-icons/fa6";
 import { PiBowlFoodFill } from "react-icons/pi";
 import {
@@ -15,14 +15,16 @@ import {
   YAxis,
 } from "recharts";
 import { Helmet } from "react-helmet-async";
+import Loader from "../../../Components/Shared/Loader";
 
 const UserHome = () => {
   const { user } = useContext(AuthContext);
+  const [axiosSecure] = UseAxiosSecure();
   const { data: payment = [] } = useQuery({
     queryKey: ["paymentHistory", user.email],
     queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/paymentHistory?email=${user.email}`
+      const res = await axiosSecure.get(
+        `/paymentHistory?email=${user.email}`
       );
       return Array.isArray(res.data) ? res.data : [];
     },
@@ -31,8 +33,8 @@ const UserHome = () => {
   const { data: items = [] } = useQuery({
     queryKey: ["chart-data-user", user.email],
     queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/chart-data-user?email=${user.email}`
+      const res = await axiosSecure.get(
+        `/chart-data-user?email=${user.email}`
       );
       return Array.isArray(res.data) ? res.data : [];
     },
@@ -132,6 +134,9 @@ const UserHome = () => {
       </text>
     );
   };
+  if (payment.length === 0 || items.length === 0) {
+    return <Loader />;
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16 overflow-hidden">
