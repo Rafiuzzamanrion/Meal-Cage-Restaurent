@@ -21,8 +21,7 @@ const UseCart = () => {
             const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/carts?email=${user.email}`,{
                 headers:{authorization:`bearer ${token}`}
             })
-
-            return res.data;
+            return Array.isArray(res.data) ? res.data : [];
       },
 });
     return [cart,refetch]

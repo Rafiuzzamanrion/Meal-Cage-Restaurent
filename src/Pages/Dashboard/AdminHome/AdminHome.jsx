@@ -26,7 +26,7 @@ const AdminHome = () => {
     queryKey: ["chart-data"],
     queryFn: async () => {
       const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/chart-data`);
-      return res.data;
+      return Array.isArray(res.data) ? res.data : [];
     },
   });
 

@@ -9,8 +9,7 @@ import axios from "axios";
         queryKey: ['menu'],
         queryFn: async () => {
             const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/menu`)
-
-            return res.data;
+            return Array.isArray(res.data) ? res.data : [];
       },
 });
     return [menu,refetch,loading]

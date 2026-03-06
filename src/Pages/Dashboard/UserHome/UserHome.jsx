@@ -24,7 +24,7 @@ const UserHome = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/paymentHistory?email=${user.email}`
       );
-      return res.data;
+      return Array.isArray(res.data) ? res.data : [];
     },
   });
 
@@ -34,7 +34,7 @@ const UserHome = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/chart-data-user?email=${user.email}`
       );
-      return res.data;
+      return Array.isArray(res.data) ? res.data : [];
     },
   });
   console.log(items);
