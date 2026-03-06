@@ -5,6 +5,7 @@ import useCart from "../../../Hooks/UseCart";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { useContext } from "react";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -43,14 +44,8 @@ const ProductDetails = () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.insertedId) {
-                        refetch(); // refetch cart to update number of items
-                        Swal.fire({
-                            position: 'top',
-                            icon: 'success',
-                            title: 'Food added on the cart.',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        refetch();
+                        toast.success('Food added to cart!', { theme: "dark" });
                     }
                 })
         }

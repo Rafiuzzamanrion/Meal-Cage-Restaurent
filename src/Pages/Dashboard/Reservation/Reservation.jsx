@@ -1,6 +1,7 @@
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const Reservation = () => {
   const [axiosSecure] = UseAxiosSecure();
@@ -32,13 +33,7 @@ const Reservation = () => {
         axiosSecure.post("/reservation", data)
           .then(res => {
             if (res.data.insertedId) {
-              Swal.fire({
-                title: "Reserved!",
-                text: "Your table has been successfully reserved.",
-                icon: "success",
-                background: '#1a1a1a',
-                color: '#f5f5f5'
-              });
+              toast.success("Table reserved successfully!", { theme: "dark" });
             }
             form.reset()
           });

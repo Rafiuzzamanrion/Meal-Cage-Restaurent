@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Shared/Loader";
+import { toast } from "react-toastify";
 
 
 const tiers = [
@@ -80,9 +81,9 @@ const Rewards = () => {
                 { userEmail: user.email, points: parseInt(pointsToRedeem) }
             );
             refetch();
-            Swal.fire({ title: 'Redeemed!', text: `${pointsToRedeem} points have been redeemed.`, icon: 'success', background: '#1a1a1a', color: '#f5f5f5', confirmButtonColor: '#d4af37' });
+            toast.success(`${pointsToRedeem} points redeemed successfully!`, { theme: "dark" });
         } catch (err) {
-            Swal.fire({ title: 'Error', text: err.response?.data?.message || err.message, icon: 'error', background: '#1a1a1a', color: '#f5f5f5' });
+            toast.error(err.response?.data?.message || err.message, { theme: "dark" });
         } finally {
             setRedeeming(false);
         }
