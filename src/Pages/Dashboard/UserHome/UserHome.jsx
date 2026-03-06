@@ -16,25 +16,26 @@ import {
 } from "recharts";
 import { Helmet } from "react-helmet-async";
 import Loader from "../../../Components/Shared/Loader";
+import NoData from "../../../Components/Shared/NoData";
 
 const UserHome = () => {
   const { user } = useContext(AuthContext);
   const [axiosSecure] = UseAxiosSecure();
-  const { data: payment = [] } = useQuery({
+  const { data: payment = [], isLoading: paymentLoading } = useQuery({
     queryKey: ["paymentHistory", user.email],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/paymentHistory?email=${user.email}`
+        `/ paymentHistory ? email = ${user.email} `
       );
       return Array.isArray(res.data) ? res.data : [];
     },
   });
 
-  const { data: items = [] } = useQuery({
+  const { data: items = [], isLoading: itemsLoading } = useQuery({
     queryKey: ["chart-data-user", user.email],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/chart-data-user?email=${user.email}`
+        `/ chart - data - user ? email = ${user.email} `
       );
       return Array.isArray(res.data) ? res.data : [];
     },
@@ -98,7 +99,7 @@ const UserHome = () => {
         ${x + width / 2}, ${y}
         C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height
       } ${x + width}, ${y + height}
-        Z`;
+Z`;
   };
 
   const TriangleBar = (props) => {
@@ -130,11 +131,11 @@ const UserHome = () => {
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
       >
-        {`${(percent * 100).toFixed(0)}%`}
+        {`${(percent * 100).toFixed(0)}% `}
       </text>
     );
   };
-  if (payment.length === 0 || items.length === 0) {
+  if (paymentLoading || itemsLoading) {
     return <Loader />;
   }
 
@@ -158,10 +159,14 @@ const UserHome = () => {
             <FaSackDollar size={32} className="text-primary" />
           </div>
           <h3 className="text-sm font-sans text-light/60 tracking-widest uppercase mb-1">Total Spent</h3>
-          <h1 className="text-4xl md:text-5xl font-sans font-bold text-light">
-            <span className="text-primary text-2xl align-top mr-1">$</span>
-            {parseFloat(totalSpent?.toFixed(2))}
-          </h1>
+          {totalSpent === 0 ? (
+            <NoData heading="No Activity Yet" text="Your recent order history will appear here once you make a purchase." />
+          ) : (
+            <h1 className="text-4xl md:text-5xl font-sans font-bold text-light">
+              <span className="text-primary text-2xl align-top mr-1">$</span>
+              {parseFloat(totalSpent?.toFixed(2))}
+            </h1>
+          )}
         </div>
 
         <div className="bg-dark-800 border border-white/5 shadow-2xl shadow-black/50 rounded-2xl flex flex-col justify-center items-center p-8 group hover:border-white/10 transition-colors"
@@ -199,7 +204,7 @@ const UserHome = () => {
               label={{ position: "top", fill: '#f5f5f5' }}
             >
               {newArray.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell key={`cell - ${index} `} fill={COLORS[index % COLORS.length]} />
               ))}
             </Bar>
           </BarChart>
@@ -219,7 +224,7 @@ const UserHome = () => {
             >
               {newArray.map((entry, index) => (
                 <Cell
-                  key={`cell-${index}`}
+                  key={`cell - ${index} `}
                   fill={COLORS[index % COLORS.length]}
                 />
               ))}

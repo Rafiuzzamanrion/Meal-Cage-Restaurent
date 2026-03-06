@@ -7,6 +7,8 @@ import { useContext } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+
 const ProductDetails = () => {
     const { id } = useParams();
     const [food, setFood] = useState(null);
@@ -14,6 +16,7 @@ const ProductDetails = () => {
     const { user } = useContext(AuthContext);
     const [, refetch] = useCart();
     const navigate = useNavigate();
+    const [axiosSecure] = UseAxiosSecure();
 
     // Fetch food details using the proper single-item endpoint
     useEffect(() => {
@@ -34,16 +37,9 @@ const ProductDetails = () => {
     const handleAddToCart = (item) => {
         if (user && user.email) {
             const cartItem = { menuItemId: item._id, name: item.name, image: item.image, price: item.price, email: user.email }
-            fetch(`${import.meta.env.VITE_API_BASE_URL}/carts`, {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(cartItem)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.insertedId) {
+            axiosSecure.post('/carts', cartItem)
+                .then(res => {
+                    if (res.data._id || res.data.insertedId) {
                         refetch();
                         toast.success('Food added to cart!', { theme: "dark" });
                     }

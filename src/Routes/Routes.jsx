@@ -26,6 +26,8 @@ import ManageBookings from "../Pages/Dashboard/ManageBookings/ManageBookings";
 import GiftCards from "../Pages/GiftCards/GiftCards";
 import Rewards from "../Pages/Dashboard/Rewards/Rewards";
 import UpdateItem from "../Pages/Dashboard/UpdateItem/UpdateItem";
+import Checkout from "../Pages/Dashboard/Checkout/Checkout";
+import ReservationHistory from "../Pages/Dashboard/ReservationHistory/ReservationHistory";
 
 
 
@@ -95,12 +97,20 @@ const router = createBrowserRouter([
         element: <Payment></Payment>
       },
       {
+        path: 'checkout',
+        element: <Checkout></Checkout>
+      },
+      {
         path: 'paymentHistory',
         element: <PaymentHistory></PaymentHistory>
       },
       {
         path: 'reservation',
         element: <Reservation></Reservation>
+      },
+      {
+        path: 'reservationHistory',
+        element: <ReservationHistory></ReservationHistory>
       },
       {
         path: 'rewards',

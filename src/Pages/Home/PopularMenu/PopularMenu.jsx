@@ -2,12 +2,17 @@
 import { Link } from "react-router-dom";
 import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import UseMenu from "../../../Hooks/UseMenu";
+import Loader from "../../../Components/Shared/Loader";
 import MenuItem from "../../Shared/MenuItem/MenuItem";
 
 
 const PopularMenu = () => {
-    const [menu] = UseMenu();
-    const popular = menu.filter(item => item.category === 'popular')
+
+    const [menu, , loading] = UseMenu();
+    const popular = menu.filter(item => item.category === 'popular');
+
+    if (loading) return <Loader />;
+
     return (
         <section className="container mx-auto px-4 py-16">
             <SectionTitle

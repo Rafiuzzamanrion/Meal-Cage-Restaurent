@@ -1,11 +1,12 @@
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { Helmet } from "react-helmet-async";
-import { FaStar, FaMedal, FaTrophy, FaCrown, FaGift } from "react-icons/fa";
+import { FaStar, FaMedal, FaTrophy, FaCrown, FaGift, FaHistory, FaArrowRight } from "react-icons/fa";
 import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Shared/Loader";
+import NoData from "../../../Components/Shared/NoData";
 import { toast } from "react-toastify";
 
 
@@ -65,7 +66,7 @@ const Rewards = () => {
         const { value: pointsToRedeem } = await Swal.fire({
             title: 'Redeem Points',
             input: 'number',
-            inputLabel: `Available: ${rewardData?.points || 0} pts. Enter amount to redeem:`,
+            inputLabel: `Available: ${rewardData?.points || 0} pts.Enter amount to redeem: `,
             inputAttributes: { min: 1, max: rewardData?.points || 0 },
             showCancelButton: true,
             confirmButtonColor: '#d4af37',
@@ -149,7 +150,7 @@ const Rewards = () => {
                         <div className="w-full bg-dark-900 rounded-full h-3 overflow-hidden">
                             <div
                                 className="bg-gradient-to-r from-amber-500 to-primary h-3 rounded-full transition-all duration-1000"
-                                style={{ width: `${progress}%` }}
+                                style={{ width: `${progress}% ` }}
                             />
                         </div>
                     </div>
@@ -160,9 +161,9 @@ const Rewards = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 {tiers.map((t, i) => (
                     <div key={i} data-aos="fade-up" data-aos-delay={i * 80}
-                        className={`bg-dark-800 border rounded-2xl p-5 text-center transition-colors ${tier === t.name ? 'border-primary/50 shadow-[0_0_20px_rgba(212,175,55,0.15)]' : 'border-white/5'}`}>
+                        className={`bg - dark - 800 border rounded - 2xl p - 5 text - center transition - colors ${tier === t.name ? 'border-primary/50 shadow-[0_0_20px_rgba(212,175,55,0.15)]' : 'border-white/5'} `}>
                         <div className="text-3xl flex justify-center mb-2">{t.icon}</div>
-                        <p className={`font-serif tracking-widest text-lg ${t.color}`}>{t.name}</p>
+                        <p className={`font - serif tracking - widest text - lg ${t.color} `}>{t.name}</p>
                         <p className="text-light/50 text-xs font-sans mt-1">{t.min.toLocaleString()}+ pts</p>
                     </div>
                 ))}
@@ -172,7 +173,7 @@ const Rewards = () => {
             <div className="bg-dark-800 border border-white/5 rounded-2xl p-6 md:p-8 shadow-2xl" data-aos="fade-up">
                 <h3 className="text-xl font-serif text-light mb-6 tracking-wide">Points History</h3>
                 {history.length === 0 ? (
-                    <p className="text-light/50 font-sans text-center py-8">No points history yet. Make your first order to start earning!</p>
+                    <NoData heading="No reward history" text="When you earn or redeem points, it will show up here." />
                 ) : (
                     <div className="flex flex-col gap-4">
                         {history.map((item, idx) => (
@@ -181,7 +182,7 @@ const Rewards = () => {
                                     <p className="text-light font-sans font-medium">{item.action}</p>
                                     <p className="text-light/50 text-xs font-sans mt-0.5">{new Date(item.date).toLocaleDateString()}</p>
                                 </div>
-                                <span className={`font-bold font-sans text-lg tracking-wide ${item.type === 'earn' ? 'text-green-400' : 'text-red-400'}`}>
+                                <span className={`font - bold font - sans text - lg tracking - wide ${item.type === 'earn' ? 'text-green-400' : 'text-red-400'} `}>
                                     {item.type === 'earn' ? '+' : ''}{item.points} pts
                                 </span>
                             </div>
