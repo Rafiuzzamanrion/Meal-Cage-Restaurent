@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
@@ -40,18 +41,11 @@ const BookingCard = ({ booking }) => {
             if (res.data?.status === 'delivered' || res.status === 200) {
                 setCurrentStatus('delivered');
                 queryClient.invalidateQueries(['bookings']);
-                Swal.fire({
-                    title: 'Delivered!',
-                    icon: 'success',
-                    background: '#1a1a1a',
-                    color: '#f5f5f5',
-                    timer: 1500,
-                    showConfirmButton: false,
-                });
+                toast.success('Successfully delivered!', { theme: "dark" });
             }
         } catch (err) {
             console.error(err);
-            Swal.fire({ title: 'Error', text: err.message, icon: 'error', background: '#1a1a1a', color: '#f5f5f5' });
+            toast.error(err.message, { theme: "dark" });
         } finally {
             setDelivering(false);
         }

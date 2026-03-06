@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const img_hosting_token = import.meta.env.VITE_ImageUploadToken;
 
@@ -47,13 +48,7 @@ const AddItem = () => {
               axiosSecure.post("/menu", newItem).then((data) => {
                 if (data.data.insertedId) {
                   reset();
-                  Swal.fire({
-                    title: "Added!!",
-                    text: `${name} has been added to menu successfully`,
-                    icon: "success",
-                    background: '#1a1a1a',
-                    color: '#f5f5f5'
-                  });
+                  toast.success(`${name} added to menu successfully!`, { theme: "dark" });
                 }
               });
             }

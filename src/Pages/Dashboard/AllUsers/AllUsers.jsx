@@ -5,6 +5,7 @@ import { FaUserShield } from "react-icons/fa";
 
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import Loader from "../../../Components/Shared/Loader";
@@ -35,13 +36,7 @@ const AllUsers = () => {
           .then((data) => {
             if (data.data.deletedCount > 0) {
               refetch();
-              Swal.fire({
-                title: "Deleted!",
-                text: `${user.name} has been deleted successfully`,
-                icon: "success",
-                background: '#1a1a1a',
-                color: '#f5f5f5'
-              });
+              toast.success(`${user.name} deleted successfully!`, { theme: "dark" });
             }
           });
       }
@@ -65,13 +60,7 @@ const AllUsers = () => {
           .then((data) => {
             if (data.data.modifiedCount) {
               refetch();
-              Swal.fire({
-                title: "Updated!",
-                text: `${user.name} is now an Admin`,
-                icon: "success",
-                background: '#1a1a1a',
-                color: '#f5f5f5'
-              });
+              toast.success(`${user.name} is now an Admin!`, { theme: "dark" });
             }
           });
       }
@@ -104,23 +93,9 @@ const AllUsers = () => {
             if (data.data.insertedId) {
               refetch();
               form.reset();
-              Swal.fire({
-                title: "Added!",
-                text: `${name} is now an Admin`,
-                icon: "success",
-                background: '#1a1a1a',
-                color: '#f5f5f5'
-              });
+              toast.success(`${name} is now an Admin!`, { theme: "dark" });
             } else {
-              Swal.fire({
-                position: "top",
-                icon: "error",
-                title: `${name} is already an Admin`,
-                showConfirmButton: false,
-                timer: 1500,
-                background: '#1a1a1a',
-                color: '#f5f5f5'
-              });
+              toast.error(`${name} is already an Admin!`, { theme: "dark" });
             }
           });
       }
