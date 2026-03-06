@@ -5,6 +5,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import UseCart from "../../Hooks/UseCart";
 import { toast } from "react-toastify";
 
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 
 const FoodCard = ({ item }) => {
@@ -12,27 +13,17 @@ const FoodCard = ({ item }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate()
   const location = useLocation();
-  // ======== here comma (,) is used because refetch can not use alone without data(cart) ==========
   const [, refetch] = UseCart();
-
+  const [axiosSecure] = UseAxiosSecure();
 
   const handleAddToCart = item => {
-    item
     if (user && user.email) {
       const cartItem = { foodId: _id, name, image, price, email: user.email, category: category }
-      fetch(`${import.meta.env.VITE_API_BASE_URL}/carts`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(cartItem)
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.insertedId) {
+      axiosSecure.post('/carts', cartItem)
+        .then(res => {
+          if (res.data._id || res.data.insertedId) {
             refetch();
-            if (data.insertedId) {
-              refetch();
-              toast.success("Added to cart!", { theme: "dark" });
-            }
+            toast.success("Added to cart!", { theme: "dark" });
           }
         })
     }
@@ -41,7 +32,7 @@ const FoodCard = ({ item }) => {
         title: 'Please log in first to order !!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#54B4D3',
+        confirmButtonColor: '#d4af37',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Log in now'
       }).then((result) => {

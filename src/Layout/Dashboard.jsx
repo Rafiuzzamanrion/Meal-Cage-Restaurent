@@ -5,7 +5,8 @@ import {
   FaCalendarAlt,
   FaHome,
   FaUsers,
-  FaStar
+  FaStar,
+  FaBox
 } from "react-icons/fa";
 import { GiHamburgerMenu, GiForkKnifeSpoon } from "react-icons/gi";
 import { BsArrow90DegLeft } from "react-icons/bs";
@@ -136,10 +137,10 @@ const Dashboard = () => {
                 </li>
                 <li>
                   <Link to={'/dashboard/paymentHistory'} className="hover:bg-dark-800 hover:text-primary transition-colors py-3">
-                    <FaWallet size={22} className="text-primary" />
+                    <FaBox size={22} className="text-primary" />
                     <span className="font-semibold tracking-wide">
                       {" "}
-                      Payment History
+                      Order History
                     </span>
                   </Link>
                 </li>
@@ -148,7 +149,16 @@ const Dashboard = () => {
                     <FaCalendarAlt size={22} className="text-primary" />{" "}
                     <span className="font-semibold tracking-wide">
                       {" "}
-                      Reservations
+                      Book a Table
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to={'/dashboard/reservationHistory'} className="hover:bg-dark-800 hover:text-primary transition-colors py-3">
+                    <FaCalendarAlt size={22} className="text-primary" />{" "}
+                    <span className="font-semibold tracking-wide">
+                      {" "}
+                      Reservation History
                     </span>
                   </Link>
                 </li>

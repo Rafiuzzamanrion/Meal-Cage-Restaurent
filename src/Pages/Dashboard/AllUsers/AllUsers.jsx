@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import Loader from "../../../Components/Shared/Loader";
+import NoData from "../../../Components/Shared/NoData";
 
 const AllUsers = () => {
   const [axiosSecure] = UseAxiosSecure();
@@ -32,7 +33,7 @@ const AllUsers = () => {
       color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.delete(`/users/${user._id}`)
+        axiosSecure.delete(`/ users / ${user._id} `)
           .then((data) => {
             if (data.data.deletedCount > 0) {
               refetch();
@@ -46,7 +47,7 @@ const AllUsers = () => {
   const handleMakeAdmin = (user) => {
     Swal.fire({
       title: "Grant Admin Privileges?",
-      text: `Make ${user.name} an Admin?`,
+      text: `Make ${user.name} an Admin ? `,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#d4af37",
@@ -56,7 +57,7 @@ const AllUsers = () => {
       color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/users/admin/${user._id}`)
+        axiosSecure.patch(`/ users / admin / ${user._id} `)
           .then((data) => {
             if (data.data.modifiedCount) {
               refetch();
@@ -77,7 +78,7 @@ const AllUsers = () => {
 
     Swal.fire({
       title: "Grant Admin Privileges?",
-      text: `Make ${name} an Admin?`,
+      text: `Make ${name} an Admin ? `,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#d4af37",
@@ -102,7 +103,18 @@ const AllUsers = () => {
     });
   };
   if (users.length === 0) {
-    return <Loader />;
+    return (
+      <div className="w-full max-w-5xl mx-auto px-4 lg:px-8 pb-16">
+        <Helmet>
+          <title>MealCage | All Users</title>
+        </Helmet>
+        <h1 className="text-3xl font-serif text-light tracking-widest text-center mt-12 mb-8 uppercase"
+          data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="800">Manage Users</h1>
+        <NoData heading="No Users Found" text="No users have registered on the platform yet." />
+      </div>
+    );
   }
   return (
     <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16">
