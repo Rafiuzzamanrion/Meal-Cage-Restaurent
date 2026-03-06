@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import avatar from "../../../assets/avatar2.jpg";
-import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import { FaShoppingCart } from "react-icons/fa";
 import UseCart from "../../../Hooks/UseCart";
 import img from '/icon.jpg'
@@ -18,13 +18,7 @@ const NavBar = () => {
   const handleLogOut = () => {
     logOut()
       .then(() => {
-        Swal.fire({
-          position: "top",
-          icon: "success",
-          title: "You have successfully Logged out",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        toast.success("Successfully logged out!", { theme: "dark" });
       })
       .catch((error) => {
         console.log(error);
