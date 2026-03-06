@@ -18,7 +18,7 @@ const Payment = () => {
     const price = parseFloat(total?.toFixed(2))
 
     return (
-        <div className="w-full max-w-4xl mx-auto px-4 lg:px-8 pb-16">
+        <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 pb-16">
             <Helmet>
                 <title>MealCage | Payment</title>
             </Helmet>

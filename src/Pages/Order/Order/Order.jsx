@@ -6,6 +6,7 @@ import { useState } from "react";
 import UseMenu from "../../../Hooks/UseMenu";
 
 import OrderTab from "../OrderTab/OrderTab";
+import Loader from "../../../Components/Shared/Loader";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
@@ -14,13 +15,15 @@ const Order = () => {
   const { category } = useParams();
   const initialIndex = categories.indexOf(category)
   const [tabIndex, setTabIndex] = useState(initialIndex);
-  const [menu] = UseMenu();
+  const [menu, , loading] = UseMenu();
 
-  const desserts = menu.filter(item => item.category === 'dessert')
-  const soups = menu.filter(item => item.category === 'soup')
+  const dessert = menu.filter(item => item.category === 'dessert')
+  const soup = menu.filter(item => item.category === 'soup')
   const salads = menu.filter(item => item.category === 'salad')
   const pizzas = menu.filter(item => item.category === 'pizza')
   const drinks = menu.filter(item => item.category === 'drinks')
+
+  if (loading) return <Loader />;
 
   return (
     <div>
