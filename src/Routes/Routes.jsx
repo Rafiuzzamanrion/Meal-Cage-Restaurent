@@ -25,6 +25,7 @@ import Contact from "../Pages/Contact/Contact";
 import ManageBookings from "../Pages/Dashboard/ManageBookings/ManageBookings";
 import GiftCards from "../Pages/GiftCards/GiftCards";
 import Rewards from "../Pages/Dashboard/Rewards/Rewards";
+import UpdateItem from "../Pages/Dashboard/UpdateItem/UpdateItem";
 
 
 
@@ -129,6 +130,11 @@ const router = createBrowserRouter([
       {
         path: 'manageBookings',
         element: <AdminRoutes><ManageBookings></ManageBookings></AdminRoutes>
+      },
+      {
+        path: 'updateItem/:id',
+        element: <AdminRoutes><UpdateItem></UpdateItem></AdminRoutes>,
+        loader: ({ params }) => fetch(`${import.meta.env.VITE_API_BASE_URL}/menu/${params.id}`)
       }
 
 

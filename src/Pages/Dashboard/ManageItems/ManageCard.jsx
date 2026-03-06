@@ -1,4 +1,6 @@
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import UseMenu from "../../../Hooks/UseMenu";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
@@ -60,7 +62,14 @@ const ManageCard = ({ item }) => {
           </div>
         </div>
 
-        <div className="shrink-0 mt-4 sm:mt-0">
+        <div className="shrink-0 mt-4 sm:mt-0 flex gap-3">
+          <Link
+            to={`/dashboard/updateItem/${_id}`}
+            title="Edit Item"
+            className="btn btn-circle btn-outline border-primary/50 text-primary hover:bg-primary hover:text-dark-900 hover:border-primary transition-all duration-300 shadow-md"
+          >
+            <FaEdit size={22} />
+          </Link>
           <button
             onClick={() => handleDelete(_id)}
             title="Delete Item"
