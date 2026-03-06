@@ -16,30 +16,6 @@ const SignUp = () => {
 
   // -----------------alert----------------------
 
-  const alertSuccess = <div className="alert alert-success">
-    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-    <span>You have successfully created an account !!</span>
-  </div>;
-  const alertError1 = <div className="alert alert-warning">
-    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-    <span>Warning: Password must have at least one Uppercase Character !</span>
-  </div>
-  const alertError2 = <div className="alert alert-warning">
-    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-    <span>Warning: Password must have at least one LowerCase Character !</span>
-  </div>
-  const alertError3 = <div className="alert alert-warning">
-    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-    <span>Warning: Password must have at least one Special Symbol !</span>
-  </div>
-  const alertError4 = <div className="alert alert-warning">
-    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-    <span>Warning: Password must have at least 8 Character !</span>
-  </div>
-  const alertError5 = <div className="alert alert-warning">
-    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-    <span>Warning: The email already in use !!</span>
-  </div>
 
   const handleSignUp = event => {
     event.preventDefault();
@@ -52,45 +28,19 @@ const SignUp = () => {
 
     // validation or pass expression
     if (!/^(?=.*[A-Z]).*$/.test(password)) {
-      setError(alertError1)
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!'
-      })
-      setSuccess('')
-
+      toast.warning("Password must have at least one Uppercase Character!", { theme: "dark" });
       return;
     }
     else if (!/^(?=.*[a-z]).*$/.test(password)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!'
-      })
-      setError(alertError2)
-      setSuccess('')
+      toast.warning("Password must have at least one LowerCase Character!", { theme: "dark" });
       return;
     }
     else if (!/^(?=.*[~`!@#$%^&*()--+={}[\]|\\:;"'<>,.?/_₹]).*$/.test(password)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!'
-      })
-      setError(alertError3)
-      setSuccess('')
+      toast.warning("Password must have at least one Special Symbol!", { theme: "dark" });
       return;
-
     }
-    else if (!password.length >= 8) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!'
-      })
-      setError(alertError4)
-      setSuccess('')
+    else if (password.length < 8) {
+      toast.warning("Password must have at least 8 Character!", { theme: "dark" });
       return;
     }
 
@@ -99,15 +49,7 @@ const SignUp = () => {
     createUser(email, password)
       .then(result => {
         const user = result.user;
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'You have successfully Created an account',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        setSuccess(alertSuccess)
-        setError('')
+        toast.success("Account created successfully!", { theme: "dark" });
         console.log(user)
 
         updateUserProfile(name, photo)
@@ -122,17 +64,8 @@ const SignUp = () => {
               .then(res => res.json())
               .then(data => {
                 if (data.insertedId) {
-                  Swal.fire({
-                    position: 'top',
-                    icon: 'success',
-                    title: 'You have successfully created an account !!',
-                    showConfirmButton: false,
-                    timer: 1500
-                  })
-                  setSuccess(alertSuccess)
-                  setError('')
+                  toast.success("Profile updated and synced!", { theme: "dark" });
                   navigate('/')
-                  // ========= end of posting ===========
                 }
 
               })
@@ -143,13 +76,7 @@ const SignUp = () => {
           .catch(error => console.log(error))
       })
       .catch(error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
-        setError(alertError5)
-        setSuccess('')
+        toast.error(error.message || "Email already in use or something went wrong!", { theme: "dark" });
         console.log(error)
       })
 

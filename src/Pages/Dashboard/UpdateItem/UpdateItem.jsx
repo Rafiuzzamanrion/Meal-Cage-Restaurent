@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import Loader from "../../../Components/Shared/Loader";
 
@@ -54,13 +55,7 @@ const UpdateItem = () => {
 
                                 axiosSecure.patch(`/menu/${_id}`, updatedItem).then((res) => {
                                     if (res.data.modifiedCount > 0 || res.data._id) {
-                                        Swal.fire({
-                                            title: "Updated!",
-                                            text: `${name} has been updated successfully`,
-                                            icon: "success",
-                                            background: '#1a1a1a',
-                                            color: '#f5f5f5'
-                                        });
+                                        toast.success(`${name} updated successfully!`, { theme: "dark" });
                                         navigate('/dashboard/manageItems');
                                     }
                                 });
@@ -76,13 +71,7 @@ const UpdateItem = () => {
                     };
                     axiosSecure.patch(`/menu/${_id}`, updatedItem).then((res) => {
                         if (res.data.modifiedCount > 0 || res.data._id) {
-                            Swal.fire({
-                                title: "Updated!",
-                                text: `${name} has been updated successfully`,
-                                icon: "success",
-                                background: '#1a1a1a',
-                                color: '#f5f5f5'
-                            });
+                            toast.success(`${name} updated successfully!`, { theme: "dark" });
                             navigate('/dashboard/manageItems');
                         }
                     });
