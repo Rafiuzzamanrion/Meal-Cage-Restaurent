@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const Footer = () => {
@@ -10,17 +10,17 @@ const Footer = () => {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
-      Swal.fire({ title: 'Invalid Email', text: 'Please enter a valid email address.', icon: 'warning', background: '#1a1a1a', color: '#f5f5f5' });
+      toast.warning('Please enter a valid email address.', { theme: "dark" });
       return;
     }
     setSubscribing(true);
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/newsletter/subscribe`, { email });
-      Swal.fire({ title: 'Subscribed!', text: "You're now on the VIP list. Exclusive deals coming your way!", icon: 'success', background: '#1a1a1a', color: '#f5f5f5', timer: 2000, showConfirmButton: false });
+      toast.success("You're now on the VIP list!", { theme: "dark" });
       setEmail('');
     } catch (err) {
       const msg = err.response?.status === 409 ? 'This email is already subscribed.' : err.message;
-      Swal.fire({ title: 'Oops!', text: msg, icon: 'info', background: '#1a1a1a', color: '#f5f5f5' });
+      toast.info(msg, { theme: "dark" });
     } finally {
       setSubscribing(false);
     }
@@ -43,7 +43,7 @@ const Footer = () => {
         </aside>
 
         <nav className="font-sans tracking-wide w-full flex flex-col items-center md:items-start text-center md:text-left">
-          <header className="footer-title text-primary font-serif text-xl normal-case mb-4 opacity-100 uppercase tracking-widest">Newsletter</header>
+          <header className="footer-title text-primary font-serif text-xl mb-4 opacity-100 uppercase tracking-widest">Newsletter</header>
           <p className="mb-4 text-light/70 font-light max-w-sm">Subscribe to receive updates, access to exclusive deals, and more.</p>
           <form onSubmit={handleSubscribe} className="relative w-full max-w-xs group">
             <input

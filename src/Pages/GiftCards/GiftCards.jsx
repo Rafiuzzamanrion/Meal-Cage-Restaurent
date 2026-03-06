@@ -25,15 +25,7 @@ const GiftCards = () => {
             color: '#f5f5f5'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Redirecting...',
-                    text: 'Taking you to the secure payment portal.',
-                    icon: 'info',
-                    background: '#1a1a1a',
-                    color: '#f5f5f5',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                toast.info('Redirecting to secure payment portal...', { theme: "dark" });
             }
         });
     };

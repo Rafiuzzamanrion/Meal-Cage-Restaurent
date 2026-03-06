@@ -1,13 +1,4 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../../Providers/AuthProvider";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import Swal from "sweetalert2";
-import bg from '../../assets/others/authentication2.png'
-import SocialLogin from "../Shared/SocialLogin/SocialLogin";
-
-
-
+import { toast } from "react-toastify";
 
 
 const Login = () => {
@@ -22,10 +13,6 @@ const Login = () => {
 
 
 
-  const alertSuccess = <div className="alert alert-success">
-    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-    <span>You have successfully Logged In !!</span>
-  </div>;
 
   const handleLogin = event => {
 
@@ -37,33 +24,16 @@ const Login = () => {
       .then(result => {
 
         const user = result.user;
-        setSuccess(alertSuccess);
-        setError(' ')
-        Swal.fire({
-          position: 'top',
-          icon: 'success',
-          title: 'You have successfully Logged in',
-          showConfirmButton: false,
-          timer: 1500
+        toast.success('Successfully logged in!', {
+          theme: "dark"
         });
         navigate(from, { replace: true });
-
         console.log(user)
       })
       .catch(error => {
-        setError(<div className="alert alert-error">
-          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          <span>Wrong! You have entered a wrong password</span>
-        </div>)
-
-        Swal.fire({
-          position: 'top',
-          icon: 'error',
-          title: 'Your password is wrong',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        setSuccess('')
+        toast.error('Login failed! Please check your credentials.', {
+          theme: "dark"
+        });
         console.log(error)
       })
   }
