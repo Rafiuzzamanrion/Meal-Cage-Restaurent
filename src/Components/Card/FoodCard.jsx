@@ -3,6 +3,7 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import UseCart from "../../Hooks/UseCart";
+import { toast } from "react-toastify";
 
 
 
@@ -28,13 +29,10 @@ const FoodCard = ({ item }) => {
         .then(data => {
           if (data.insertedId) {
             refetch();
-            Swal.fire({
-              position: "top",
-              icon: "success",
-              title: "Successfully added to cart",
-              showConfirmButton: false,
-              timer: 1200,
-            });
+            if (data.insertedId) {
+              refetch();
+              toast.success("Added to cart!", { theme: "dark" });
+            }
           }
         })
     }

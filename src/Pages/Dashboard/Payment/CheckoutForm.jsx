@@ -1,6 +1,6 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
-import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
@@ -53,13 +53,7 @@ const CheckoutForm = ({ price, cart }) => {
 
     if (error) {
       console.log("error", error);
-      Swal.fire({
-        position: "top",
-        icon: "error",
-        title: `${error.message}`,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      toast.error(error.message, { theme: "dark" });
     } else {
       console.log("payment method", paymentMethod);
     }
@@ -76,23 +70,11 @@ const CheckoutForm = ({ price, cart }) => {
       });
     if (confirmError) {
       console.log(confirmError)
-      Swal.fire({
-        position: "top",
-        icon: "error",
-        title: `${confirmError.message}`,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      toast.error(confirmError.message, { theme: "dark" });
     }
     if (paymentIntent.status === 'succeeded') {
 
-      Swal.fire({
-        position: "top",
-        icon: "success",
-        title: `Your payment has been received`,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      toast.success('Payment succeeded!', { theme: "dark" });
 
       const payment = {
         email: user?.email, transactionId: paymentIntent.id,
@@ -108,13 +90,9 @@ const CheckoutForm = ({ price, cart }) => {
       axiosSecure.post("/payments", payment)
         .then(res => {
           if (res.data.insertResult.insertedId) {
-            Swal.fire({
-              position: "top",
-              icon: "success",
-              title: `payment ifo saved successfully`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
+            if (res.data.insertResult.insertedId) {
+              toast.success('Payment details saved!', { theme: "dark" });
+            }
           }
         })
 

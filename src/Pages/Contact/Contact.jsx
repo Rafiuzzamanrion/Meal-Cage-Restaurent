@@ -3,7 +3,7 @@ import { FaPhone } from "react-icons/fa";
 import { FaBug, FaNewspaper } from "react-icons/fa6";
 import { RiCustomerServiceFill } from "react-icons/ri";
 import { useRef, useState } from "react";
-import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const Contact = () => {
@@ -19,24 +19,17 @@ const Contact = () => {
         const message = messageRef.current.value.trim();
 
         if (!name || !email || !message) {
-            Swal.fire({ title: 'All fields are required', icon: 'warning', background: '#1a1a1a', color: '#f5f5f5' });
+            toast.warning('All fields are required!', { theme: "dark" });
             return;
         }
 
         setSending(true);
         try {
             await axios.post(`${import.meta.env.VITE_API_BASE_URL}/contact`, { name, email, message });
-            Swal.fire({
-                title: 'Message Sent!',
-                text: "Thank you for reaching out. We'll get back to you within 24 hours.",
-                icon: 'success',
-                background: '#1a1a1a',
-                color: '#f5f5f5',
-                confirmButtonColor: '#d4af37',
-            });
+            toast.success("Message sent successfully!", { theme: "dark" });
             e.target.reset();
         } catch (err) {
-            Swal.fire({ title: 'Error', text: err.message, icon: 'error', background: '#1a1a1a', color: '#f5f5f5' });
+            toast.error(err.message || 'Something went wrong!', { theme: "dark" });
         } finally {
             setSending(false);
         }
