@@ -3,6 +3,8 @@ import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import BookingCard from "./BookingCard";
 import { Helmet } from "react-helmet-async";
 import Loader from "../../../Components/Shared/Loader";
+import NoData from "../../../Components/Shared/NoData";
+import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 
 
 const ManageBookings = () => {
@@ -16,7 +18,15 @@ const ManageBookings = () => {
     });
 
     if (bookings.length === 0) {
-        return <Loader />;
+        return (
+            <div className="w-full max-w-4xl mx-auto px-4 lg:px-8 pb-16">
+                <Helmet>
+                    <title>MealCage | Manage Bookings</title>
+                </Helmet>
+                <SectionTitle heading="Manage Bookings" subHeading="Review all reservations"></SectionTitle>
+                <NoData heading="No Bookings Found" text="There are currently no table reservations." />
+            </div>
+        )
     }
 
     return (

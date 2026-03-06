@@ -1,14 +1,25 @@
 import { Helmet } from "react-helmet-async";
+import Loader from "../../../Components/Shared/Loader";
+import NoData from "../../../Components/Shared/NoData";
 import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import UseMenu from "../../../Hooks/UseMenu";
 import ManageCard from "./ManageCard";
-import Loader from "../../../Components/Shared/Loader";
 
 const ManageItems = () => {
-  const [menu] = UseMenu();
+  const [menu, refetch, loading] = UseMenu();
+
+  if (loading) return <Loader />;
 
   if (!menu || menu.length === 0) {
-    return <Loader />;
+    return (
+      <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 pb-16">
+        <Helmet>
+          <title>MealCage | Manage Items</title>
+        </Helmet>
+        <SectionTitle heading={'Manage Items'} subHeading={'Manage all menu items'}></SectionTitle>
+        <NoData heading="No Menu Items Found" text="You haven't added any dishes to the menu yet." />
+      </div>
+    );
   }
 
   return (

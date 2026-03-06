@@ -10,13 +10,16 @@ import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import MenuCategory from "../MenuCategory/MenuCategory";
 import { useState, useEffect } from "react";
 
+import { FaUtensils, FaLeaf, FaGlobe, FaFire } from "react-icons/fa";
+import { GiBowlOfRice, GiWheat } from "react-icons/gi";
+
 const dietaryFilters = [
-    { label: "All", key: "all", emoji: "🍽️" },
-    { label: "Vegan", key: "vegan", emoji: "🌿" },
-    { label: "Vegetarian", key: "vegetarian", emoji: "🥗" },
-    { label: "Gluten-Free", key: "glutenFree", emoji: "🌾" },
-    { label: "Organic", key: "organic", emoji: "🌎" },
-    { label: "Best Sellers", key: "popular", emoji: "⭐" },
+    { label: "All", key: "all", icon: <FaUtensils /> },
+    { label: "Vegan", key: "vegan", icon: <FaLeaf /> },
+    { label: "Vegetarian", key: "vegetarian", icon: <GiBowlOfRice /> },
+    { label: "Gluten-Free", key: "glutenFree", icon: <GiWheat /> },
+    { label: "Organic", key: "organic", icon: <FaGlobe /> },
+    { label: "Best Sellers", key: "popular", icon: <FaFire /> },
 ];
 
 
@@ -76,7 +79,7 @@ const Menu = () => {
                                 : 'bg-transparent text-light/70 border-white/20 hover:border-primary/50 hover:text-primary'
                                 }`}
                         >
-                            <span>{filter.emoji}</span>
+                            <span className="text-lg">{filter.icon}</span>
                             {filter.label}
                         </button>
                     ))}
