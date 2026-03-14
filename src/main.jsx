@@ -31,7 +31,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <div className="mx-3">
             <RouterProvider router={router} />
           </div>
-          <ToastContainer theme="dark" position="top-right" />
+          <ToastContainer
+            theme="dark"
+            position="top-right"
+            autoClose={1500}
+            hideProgressBar={true}
+            closeOnClick
+            pauseOnHover
+            draggable
+          />
         </QueryClientProvider>
       </HelmetProvider>
     </AuthProvider>

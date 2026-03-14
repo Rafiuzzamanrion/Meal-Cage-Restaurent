@@ -34,7 +34,7 @@ const FoodCard = ({ item }) => {
       guestCart.push(guestItem);
       localStorage.setItem('guest-cart', JSON.stringify(guestCart));
       refetch();
-      toast.success("Added to guest cart!", { theme: "dark" });
+      toast.success("Added to cart!", { theme: "dark" });
     }
   }
   return (

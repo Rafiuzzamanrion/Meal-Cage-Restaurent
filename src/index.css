@@ -110,3 +110,21 @@ html.has-scroll-dragging {
   right: auto;
   bottom: 0;
 }
+
+/* Modern Professional Toast Styling */
+.Toastify__toast {
+  border-radius: 4px;
+  @apply font-sans border border-white/10 shadow-2xl;
+}
+
+.Toastify__toast--success {
+  @apply bg-dark-800 text-light;
+}
+
+.Toastify__toast-icon {
+  @apply text-primary;
+}
+
+.Toastify__close-button {
+  @apply text-light opacity-50 hover:opacity-100;
+}

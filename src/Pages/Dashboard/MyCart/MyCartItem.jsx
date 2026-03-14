@@ -36,7 +36,7 @@ const MyCartItem = ({ item }) => {
           const updatedCart = guestCart.filter(item => item._id !== _id);
           localStorage.setItem('guest-cart', JSON.stringify(updatedCart));
           refetch();
-          toast.success("Guest item removed!", { theme: "dark" });
+          toast.success("Item removed from cart!", { theme: "dark" });
         }
       }
     });
