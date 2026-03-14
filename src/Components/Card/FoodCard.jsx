@@ -17,8 +17,8 @@ const FoodCard = ({ item }) => {
   const [axiosSecure] = UseAxiosSecure();
 
   const handleAddToCart = item => {
+    const cartItem = { foodId: _id, name, image, price, email: user?.email, category: category }
     if (user && user.email) {
-      const cartItem = { foodId: _id, name, image, price, email: user.email, category: category }
       axiosSecure.post('/carts', cartItem)
         .then(res => {
           if (res.data._id || res.data.insertedId) {
@@ -28,20 +28,14 @@ const FoodCard = ({ item }) => {
         })
     }
     else {
-      Swal.fire({
-        title: 'Please log in first to order !!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d4af37',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Log in now'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/login', { state: { from: location } })
-        }
-      })
+      const guestCart = JSON.parse(localStorage.getItem('guest-cart') || '[]');
+      // Add a temporary ID for guest items to support deletion
+      const guestItem = { ...cartItem, _id: Date.now().toString() };
+      guestCart.push(guestItem);
+      localStorage.setItem('guest-cart', JSON.stringify(guestCart));
+      refetch();
+      toast.success("Added to guest cart!", { theme: "dark" });
     }
-
   }
   return (
     <div className="h-full"

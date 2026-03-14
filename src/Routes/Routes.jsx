@@ -71,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: '/gift-cards',
         element: <GiftCards></GiftCards>
+      },
+      {
+        path: '/cart',
+        element: <MyCart></MyCart>
       }
 
     ]
@@ -86,11 +90,6 @@ const router = createBrowserRouter([
       {
         path: 'userHome',
         element: <UserHome></UserHome>
-      },
-      {
-        path: 'myCart',
-        element: <MyCart></MyCart>,
-
       },
       {
         path: 'payment',

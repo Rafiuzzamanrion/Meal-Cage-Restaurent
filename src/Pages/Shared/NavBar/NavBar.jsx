@@ -118,51 +118,70 @@ const NavBar = () => {
           </ul>
         </div>
 
-        {user ?
-
-          <div className="navbar-end gap-4 pr-4">
-            <div className="flex items-center gap-4">
-              {isAdmin ?
-                <Link className="flex items-center hover:text-primary transition-colors duration-300 relative group" to={"/dashboard/adminHome"}>
-                  <FaShoppingCart size={22} />
-                  <span className="absolute -top-2 -right-3 bg-primary text-dark-900 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] transition-transform group-hover:scale-110">
-                    {cart?.length || 0}
-                  </span>
-                </Link>
-                :
-                <Link className="flex items-center hover:text-primary transition-colors duration-300 relative group" to={"/dashboard/myCart"}>
-                  <FaShoppingCart size={22} />
-                  <span className="absolute -top-2 -right-3 bg-primary text-dark-900 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] transition-transform group-hover:scale-110">
-                    {cart?.length || 0}
-                  </span>
-                </Link>
-              }
-            </div>
-
-            <div className="avatar">
-              <div className="w-10 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2 transition-transform hover:scale-105">
-                <img src={avatar} alt="User Avatar" />
+        <div className="navbar-end gap-4 pr-4">
+          {/* Cart Dropdown - Public */}
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle hover:text-primary transition-colors duration-300 relative group">
+              <div className="indicator">
+                <FaShoppingCart size={22} />
+                <span className="badge badge-sm indicator-item bg-primary text-dark-900 border-none font-bold shadow-[0_0_10px_rgba(212,175,55,0.5)]">
+                  {cart?.length || 0}
+                </span>
+              </div>
+            </label>
+            <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-72 bg-dark-800 border border-white/10 shadow-2xl backdrop-blur-md">
+              <div className="card-body p-4">
+                <span className="font-serif font-bold text-lg text-primary">{cart?.length || 0} Items</span>
+                <div className="max-h-60 overflow-y-auto my-2 border-y border-white/5 py-2">
+                  {cart.length > 0 ? (
+                    cart.slice(0, 5).map((item, index) => (
+                      <div key={index} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-none">
+                        <img src={item.image} alt={item.name} className="w-10 h-10 rounded object-cover" />
+                        <div className="flex-1 overflow-hidden">
+                          <p className="text-sm font-medium text-light truncate">{item.name}</p>
+                          <p className="text-xs text-primary font-bold">${item.price}</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-center text-light/50 py-4 font-sans">Your cart is empty</p>
+                  )}
+                  {cart.length > 5 && (
+                    <p className="text-[10px] text-center text-primary/70 mt-1 uppercase tracking-widest">+ {cart.length - 5} more items</p>
+                  )}
+                </div>
+                <div className="card-actions mt-2">
+                  <Link to="/cart" className="w-full">
+                    <button className="btn btn-outline btn-sm rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 w-full font-sans tracking-widest font-bold uppercase transition-all duration-300">View Full Cart</button>
+                  </Link>
+                </div>
               </div>
             </div>
-
-            <button
-              onClick={handleLogOut}
-              className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300"
-            >
-              LOGOUT
-            </button>
-
           </div>
-          :
-          <div className="navbar-end pr-4">
+
+          {user ? (
+            <>
+              <div className="avatar">
+                <div className="w-10 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2 transition-transform hover:scale-105">
+                  <img src={avatar} alt="User Avatar" />
+                </div>
+              </div>
+
+              <button
+                onClick={handleLogOut}
+                className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 uppercase"
+              >
+                LOGOUT
+              </button>
+            </>
+          ) : (
             <Link to="/login">
-              <button className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300">
+              <button className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 uppercase">
                 LOGIN
               </button>
             </Link>
-          </div>
-
-        }
+          )}
+        </div>
       </div>
     </>
   );

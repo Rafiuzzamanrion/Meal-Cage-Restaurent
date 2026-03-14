@@ -124,7 +124,7 @@ const Dashboard = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="flex flex-row hover:bg-dark-800 hover:text-primary transition-colors py-3" to={"/dashboard/myCart"}>
+                  <Link className="flex flex-row hover:bg-dark-800 hover:text-primary transition-colors py-3" to={"/cart"}>
                     <FaShoppingCart size={22} className="text-primary" />{" "}
                     <span className="font-semibold tracking-wide flex items-center">
                       {" "}

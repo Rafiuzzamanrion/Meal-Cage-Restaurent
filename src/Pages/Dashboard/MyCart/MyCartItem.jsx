@@ -3,9 +3,12 @@ import UseCart from "../../../Hooks/UseCart";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useContext } from "react";
+import { AuthContext } from "../../../Providers/AuthProvider";
 
 const MyCartItem = ({ item }) => {
   const { name, image, price, _id } = item;
+  const { user } = useContext(AuthContext);
   const [, refetch] = UseCart();
 
   const handleDelete = (_id) => {
@@ -20,15 +23,21 @@ const MyCartItem = ({ item }) => {
       color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${import.meta.env.VITE_API_BASE_URL}/carts/${_id}`, {
-          method: "DELETE",
-        })
-          .then((data) => {
-            if (data.data.deletedCount > 0) {
-              refetch();
-              toast.success("Item removed from cart!", { theme: "dark" });
-            }
-          });
+        if (user && user.email) {
+          axios.delete(`${import.meta.env.VITE_API_BASE_URL}/carts/${_id}`)
+            .then((data) => {
+              if (data.data.deletedCount > 0) {
+                refetch();
+                toast.success("Item removed from cart!", { theme: "dark" });
+              }
+            });
+        } else {
+          const guestCart = JSON.parse(localStorage.getItem('guest-cart') || '[]');
+          const updatedCart = guestCart.filter(item => item._id !== _id);
+          localStorage.setItem('guest-cart', JSON.stringify(updatedCart));
+          refetch();
+          toast.success("Guest item removed!", { theme: "dark" });
+        }
       }
     });
   };
