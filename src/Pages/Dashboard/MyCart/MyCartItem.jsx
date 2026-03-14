@@ -2,7 +2,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import UseCart from "../../../Hooks/UseCart";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
+import modernSwal from "../../../api/swalConfig";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 
@@ -12,15 +12,11 @@ const MyCartItem = ({ item }) => {
   const [, refetch] = UseCart();
 
   const handleDelete = (_id) => {
-    Swal.fire({
+    modernSwal.fire({
       title: "Are you want to delete it?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d4af37",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-      background: '#1a1a1a',
-      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         if (user && user.email) {

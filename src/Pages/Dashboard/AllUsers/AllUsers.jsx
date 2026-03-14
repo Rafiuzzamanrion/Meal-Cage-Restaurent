@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { FaUserShield } from "react-icons/fa";
 
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Swal from "sweetalert2";
+import modernSwal from "../../../api/swalConfig";
 import { toast } from "react-toastify";
 
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
@@ -22,15 +22,11 @@ const AllUsers = () => {
   });
 
   const handleDelete = (user) => {
-    Swal.fire({
+    modernSwal.fire({
       title: `Delete ${user.name}?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d4af37",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete!",
-      background: '#1a1a1a',
-      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.delete(`/ users / ${user._id} `)
@@ -45,16 +41,12 @@ const AllUsers = () => {
   };
 
   const handleMakeAdmin = (user) => {
-    Swal.fire({
+    modernSwal.fire({
       title: "Grant Admin Privileges?",
       text: `Make ${user.name} an Admin ? `,
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#d4af37",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Make Admin!",
-      background: '#1a1a1a',
-      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.patch(`/ users / admin / ${user._id} `)
@@ -76,16 +68,12 @@ const AllUsers = () => {
     const role = "admin";
     const admin = { name, email, role };
 
-    Swal.fire({
+    modernSwal.fire({
       title: "Grant Admin Privileges?",
       text: `Make ${name} an Admin ? `,
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#d4af37",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Make Admin!",
-      background: '#1a1a1a',
-      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure

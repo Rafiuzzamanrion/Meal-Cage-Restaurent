@@ -1,6 +1,6 @@
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { Helmet } from "react-helmet-async";
-import Swal from "sweetalert2";
+import modernSwal from "../../../api/swalConfig";
 import { toast } from "react-toastify";
 
 const Reservation = () => {
@@ -18,16 +18,12 @@ const Reservation = () => {
     const data = { date, time, name, email, description };
     console.log(data);
 
-    Swal.fire({
+    modernSwal.fire({
       title: "Confirm Reservation?",
       text: `Book a table for ${date} at ${time}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#d4af37",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Reserve it!",
-      background: '#1a1a1a',
-      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.post("/reservation", data)
