@@ -4,10 +4,7 @@ import { Helmet } from "react-helmet-async";
 import useCart from "../../../Hooks/UseCart";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { useContext } from "react";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import modernSwal from "../../../api/swalConfig";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -46,12 +43,10 @@ const ProductDetails = () => {
                 })
         }
         else {
-            Swal.fire({
+            modernSwal.fire({
                 title: 'Please login to order the food',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d4af37',
-                cancelButtonColor: '#d33',
                 confirmButtonText: 'Login now!'
             }).then((result) => {
                 if (result.isConfirmed) {

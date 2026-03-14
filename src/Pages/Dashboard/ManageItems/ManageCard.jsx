@@ -2,9 +2,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import UseMenu from "../../../Hooks/UseMenu";
-import Swal from "sweetalert2";
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
-import { toast } from "react-toastify";
+import modernSwal from "../../../api/swalConfig";
 
 const ManageCard = ({ item }) => {
   const { name, image, price, _id } = item;
@@ -12,16 +10,12 @@ const ManageCard = ({ item }) => {
   const [axiosSecure] = UseAxiosSecure();
 
   const handleDelete = (_id) => {
-    Swal.fire({
+    modernSwal.fire({
       title: "Delete this item?",
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d4af37",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-      background: '#1a1a1a',
-      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.delete(`/menu/${_id}`).then((data) => {

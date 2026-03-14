@@ -1,10 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-
-const img_hosting_token = import.meta.env.VITE_ImageUploadToken;
+import modernSwal from "../../../api/swalConfig";
 
 const AddItem = () => {
   const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
@@ -15,15 +12,11 @@ const AddItem = () => {
     const formData = new FormData();
     formData.append("image", data.image[0]);
 
-    Swal.fire({
+    modernSwal.fire({
       title: "Add this item to menu?",
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#d4af37",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, add to menu!",
-      background: '#1a1a1a',
-      color: '#f5f5f5'
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(img_hosting_url, {

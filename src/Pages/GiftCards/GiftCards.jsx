@@ -1,28 +1,24 @@
 import { Helmet } from "react-helmet-async";
 import Cover from "../Shared/Cover/Cover";
 import { FaGift } from "react-icons/fa";
-import Swal from "sweetalert2";
+import modernSwal from "../../api/swalConfig";
 
 const giftCards = [
     { id: 1, amount: 50, title: "Bronze Tier", color: "from-stone-600 to-stone-800", textColor: "text-stone-300" },
     { id: 2, amount: 100, title: "Silver Tier", color: "from-slate-400 to-slate-600", textColor: "text-slate-200" },
     { id: 3, amount: 250, title: "Gold Tier", color: "from-amber-600 to-amber-800", textColor: "text-amber-100" },
-    { id: 4, amount: 500, title: "Platinum Tier", color: "from-slate-800 to-black", textColor: "text-white" },
+    { id: 5, amount: 500, title: "Platinum Tier", color: "from-slate-800 to-black", textColor: "text-white" },
 ];
 
 const GiftCards = () => {
 
     const handlePurchase = (amount) => {
-        Swal.fire({
+        modernSwal.fire({
             title: 'Purchase Gift Card?',
             text: `Confirm purchase of $${amount} digital Gift Card.`,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#d4af37',
-            cancelButtonColor: '#d33',
             confirmButtonText: 'Proceed to Checkout',
-            background: '#1a1a1a',
-            color: '#f5f5f5'
         }).then((result) => {
             if (result.isConfirmed) {
                 toast.info('Redirecting to secure payment portal...', { theme: "dark" });

@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
-import Swal from "sweetalert2";
+import modernSwal from "../../../api/swalConfig";
 import { toast } from "react-toastify";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import Loader from "../../../Components/Shared/Loader";
@@ -24,15 +24,11 @@ const UpdateItem = () => {
             formData.append("image", data.image[0]);
         }
 
-        Swal.fire({
+        modernSwal.fire({
             title: "Update this item?",
             icon: "question",
             showCancelButton: true,
-            confirmButtonColor: "#d4af37",
-            cancelButtonColor: "#d33",
             confirmButtonText: "Yes, update!",
-            background: '#1a1a1a',
-            color: '#f5f5f5'
         }).then((result) => {
             if (result.isConfirmed) {
                 if (hasNewImage) {

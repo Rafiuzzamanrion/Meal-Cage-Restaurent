@@ -1,10 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-import { useQueryClient } from "@tanstack/react-query";
-
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import modernSwal from "../../../api/swalConfig";
 
 const BookingCard = ({ booking }) => {
     const { _id, email, price, quantity, guests, status } = booking;
@@ -18,16 +14,12 @@ const BookingCard = ({ booking }) => {
     const handleDeliver = async () => {
         if (currentStatus === 'delivered') return;
 
-        const result = await Swal.fire({
+        const result = await modernSwal.fire({
             title: 'Mark as Delivered?',
             text: `Confirm delivery for booking by ${email}`,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#d4af37',
-            cancelButtonColor: '#555',
             confirmButtonText: 'Confirm Delivery',
-            background: '#1a1a1a',
-            color: '#f5f5f5',
         });
 
         if (!result.isConfirmed) return;

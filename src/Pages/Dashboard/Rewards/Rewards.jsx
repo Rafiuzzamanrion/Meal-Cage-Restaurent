@@ -4,11 +4,10 @@ import { FaStar, FaMedal, FaTrophy, FaCrown, FaGift, FaHistory, FaArrowRight } f
 import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../Providers/AuthProvider";
-import Swal from "sweetalert2";
+import modernSwal from "../../../api/swalConfig";
 import Loader from "../../../Components/Shared/Loader";
 import NoData from "../../../Components/Shared/NoData";
 import { toast } from "react-toastify";
-
 
 const tiers = [
     { name: "Bronze", min: 0, icon: <FaMedal className="text-stone-400" />, color: "text-stone-400" },
@@ -63,16 +62,13 @@ const Rewards = () => {
     });
 
     const handleRedeem = async () => {
-        const { value: pointsToRedeem } = await Swal.fire({
+        const { value: pointsToRedeem } = await modernSwal.fire({
             title: 'Redeem Points',
             input: 'number',
-            inputLabel: `Available: ${rewardData?.points || 0} pts.Enter amount to redeem: `,
+            inputLabel: `Available: ${rewardData?.points || 0} pts. Enter amount to redeem:`,
             inputAttributes: { min: 1, max: rewardData?.points || 0 },
             showCancelButton: true,
-            confirmButtonColor: '#d4af37',
-            cancelButtonColor: '#555',
-            background: '#1a1a1a',
-            color: '#f5f5f5',
+            confirmButtonText: 'Redeem Now',
         });
         if (!pointsToRedeem) return;
 
