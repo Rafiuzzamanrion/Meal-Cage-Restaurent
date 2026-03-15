@@ -34,7 +34,7 @@ const ProductDetails = () => {
     }, [id]);
 
     const handleAddToCart = (item) => {
-        const cartItem = { foodId: item._id, name: item.name, image: item.image, price: item.price, email: user?.email, category: item.category };
+        const cartItem = { menuItemId: item._id, foodId: item._id, name: item.name, image: item.image, price: item.price, email: user?.email, category: item.category };
 
         if (user && user.email) {
             axiosSecure.post('/carts', cartItem)
