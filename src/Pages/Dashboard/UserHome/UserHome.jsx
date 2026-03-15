@@ -22,21 +22,19 @@ const UserHome = () => {
   const { user } = useContext(AuthContext);
   const [axiosSecure] = UseAxiosSecure();
   const { data: payment = [], isLoading: paymentLoading } = useQuery({
-    queryKey: ["paymentHistory", user.email],
+    queryKey: ["paymentHistory", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/ paymentHistory ? email = ${user.email} `
-      );
+      const res = await axiosSecure.get(`/paymentHistory?email=${user.email}`);
       return Array.isArray(res.data) ? res.data : [];
     },
   });
 
   const { data: items = [], isLoading: itemsLoading } = useQuery({
-    queryKey: ["chart-data-user", user.email],
+    queryKey: ["chart-data-user", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/ chart - data - user ? email = ${user.email} `
-      );
+      const res = await axiosSecure.get(`/chart-data-user?email=${user.email}`);
       return Array.isArray(res.data) ? res.data : [];
     },
   });
