@@ -1,53 +1,83 @@
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { HiDownload, HiCalendar, HiIdentification, HiHashtag, HiCurrencyDollar } from "react-icons/hi";
+import { toast } from "react-toastify";
 
 const HistoryCard = ({ paymentData }) => {
-  const { date, transactionId, quantity, price, itemName } = paymentData;
+  const { date, transactionId, quantity, price, itemName } = paymentData || {};
 
   const handleDownloadInvoice = () => {
-    const doc = new jsPDF();
-    
-    // Add professional branding
-    doc.setFillColor(20, 20, 20); // Dark background for header
-    doc.rect(0, 0, 210, 40, 'F');
-    
-    doc.setTextColor(212, 175, 55); // Gold color
-    doc.setFontSize(24);
-    doc.text("MEALCAGE", 14, 25);
-    
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(10);
-    doc.text("OFFICIAL INVOICE", 160, 25);
-    
-    // Reset text color for body
-    doc.setTextColor(40, 40, 40);
-    doc.setFontSize(12);
-    doc.text("Transaction Details", 14, 55);
-    
-    // Table content
-    const tableData = [
-      ["Transaction ID", transactionId],
-      ["Date", date],
-      ["Total Items", quantity.toString()],
-      ["Items Ordered", itemName || "Assorted Items"],
-      ["Total Paid", `$${price}`]
-    ];
-    
-    doc.autoTable({
-      startY: 65,
-      head: [['Description', 'Details']],
-      body: tableData,
-      theme: 'striped',
-      headStyles: { fillColor: [212, 175, 55], textColor: [255, 255, 255] },
-      alternateRowStyles: { fillColor: [245, 245, 245] },
-    });
-    
-    doc.setFontSize(10);
-    doc.text("Thank you for dining with MealCage!", 14, doc.autoTable.previous.finalY + 20);
-    
-    doc.save(`Invoice_${transactionId.substring(0, 8)}.pdf`);
+    try {
+      if (!transactionId) {
+        toast.error("Invalid transaction data. Cannot generate invoice.", { theme: "dark" });
+        return;
+      }
+
+      const doc = new jsPDF();
+      
+      // Add professional branding
+      doc.setFillColor(20, 20, 20); // Dark background for header
+      doc.rect(0, 0, 210, 40, 'F');
+      
+      doc.setTextColor(212, 175, 55); // Gold color
+      doc.setFontSize(24);
+      doc.text("MEALCAGE", 14, 25);
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(10);
+      doc.text("OFFICIAL INVOICE", 160, 25);
+      
+      // Reset text color for body
+      doc.setTextColor(40, 40, 40);
+      doc.setFontSize(12);
+      doc.text("Transaction Details", 14, 55);
+      
+      // Table content
+      const tableData = [
+        ["Transaction ID", transactionId || 'N/A'],
+        ["Date", date || 'N/A'],
+        ["Total Items", quantity?.toString() || '0'],
+        ["Items Ordered", itemName || "Assorted Items"],
+        ["Total Paid", `$${price || '0'}`]
+      ];
+      
+      autoTable(doc, {
+        startY: 65,
+        head: [['Description', 'Details']],
+        body: tableData,
+        theme: 'striped',
+        headStyles: { fillColor: [212, 175, 55], textColor: [255, 255, 255] },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+      });
+      
+      const finalY = (doc).lastAutoTable.finalY || 150;
+      doc.setFontSize(10);
+      doc.text("Thank you for dining with MealCage!", 14, finalY + 20);
+      
+      doc.save(`Invoice_${(transactionId || 'ORD').substring(0, 8)}.pdf`);
+      toast.success("Invoice downloaded successfully!", { theme: "dark" });
+    } catch (error) {
+      console.error("PDF Generation Error:", error);
+      toast.error("Failed to generate PDF. Please try again.", { theme: "dark" });
+    }
   };
+
+  // Robust date formatting with createdAt fallback
+  const rawDate = date || paymentData?.createdAt;
+  const displayDate = rawDate 
+    ? new Date(rawDate).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      }) 
+    : 'N/A';
+
+  const displayTime = rawDate 
+    ? new Date(rawDate).toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      }) 
+    : '';
 
   return (
     <div data-aos="fade-up" data-aos-duration="600" className="group">
@@ -66,8 +96,10 @@ const HistoryCard = ({ paymentData }) => {
               <p className="text-light/40 text-[10px] uppercase tracking-[0.2em] font-sans">Transaction ID</p>
               <p className="text-primary font-mono text-sm tracking-tighter break-all">{transactionId}</p>
               <div className="flex items-center gap-4 mt-2">
-                <span className="flex items-center gap-1.5 text-light/70 text-xs font-sans">
-                  <HiCalendar className="text-primary" /> {date.split('T')[0]}
+                <span className="flex items-center gap-1.5 text-light/80 text-xs font-sans">
+                  <HiCalendar size={14} className="text-primary" /> {displayDate}
+                  {displayTime && <span className="text-light/30 mx-1">|</span>}
+                  {displayTime && <span className="text-light/50">{displayTime}</span>}
                 </span>
               </div>
             </div>

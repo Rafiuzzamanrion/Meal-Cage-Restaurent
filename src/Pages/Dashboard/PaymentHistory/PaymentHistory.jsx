@@ -1,27 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import HistoryCard from "./HistoryCard";
 import { Helmet } from "react-helmet-async";
 import Loader from "../../../Components/Shared/Loader";
 import NoData from "../../../Components/Shared/NoData";
-
-
+import { HiSearch, HiFilter, HiX } from "react-icons/hi";
 
 const PaymentHistory = () => {
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
     const [axiosSecure] = UseAxiosSecure();
-    const { data: payment = [], isLoading } = useQuery({
-        queryKey: ['paymentHistory', user?.email],
+    const [search, setSearch] = useState("");
+    const [status, setStatus] = useState("");
+
+    const { data: payment = [], isLoading, refetch } = useQuery({
+        queryKey: ['paymentHistory', user?.email, search, status],
         enabled: !!user?.email,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/paymentHistory?email=${user.email}`);
+            const res = await axiosSecure.get(`/paymentHistory?email=${user.email}&search=${search}&status=${status}`);
             return res.data;
         },
-    })
+    });
 
-    console.log(payment)
+    const handleClear = () => {
+        setSearch("");
+        setStatus("");
+    };
 
     if (isLoading) {
         return <Loader />;
@@ -45,8 +50,53 @@ const PaymentHistory = () => {
                 </p>
             </div>
 
+            {/* Filter Section */}
+            <div className="mb-12 flex flex-col md:flex-row gap-4 items-center bg-dark-800/50 p-4 rounded-2xl border border-white/5 shadow-xl" data-aos="fade-up">
+                <div className="relative flex-1 w-full">
+                    <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-primary" size={20} />
+                    <input 
+                        type="text" 
+                        placeholder="Search by Transaction ID or Food Name..." 
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full bg-dark-900 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-light/90 font-sans focus:outline-none focus:border-primary/50 transition-colors"
+                    />
+                    {search && (
+                        <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-light/30 hover:text-primary transition-colors">
+                            <HiX size={18} />
+                        </button>
+                    )}
+                </div>
+                
+                <div className="flex gap-4 w-full md:w-auto">
+                    <div className="relative w-full md:w-48">
+                        <HiFilter className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/60" size={18} />
+                        <select 
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            className="w-full bg-dark-900 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-light/90 font-sans focus:outline-none focus:border-primary/50 transition-colors appearance-none cursor-pointer"
+                        >
+                            <option value="">All Statuses</option>
+                            <option value="paid">Paid</option>
+                            <option value="pending">Pending</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             {payment.length === 0 ? (
-                <NoData heading="No Orders Found" text="You haven't placed any orders yet. Time to treat yourself!" />
+                <div className="py-20" data-aos="zoom-in">
+                    <NoData 
+                        heading={search || status ? "No results found" : "No Orders Found"} 
+                        text={search || status ? "Try adjusting your filters or search terms." : "You haven't placed any orders yet. Time to treat yourself!"} 
+                    />
+                    {(search || status) && (
+                        <div className="text-center mt-6">
+                            <button onClick={handleClear} className="text-primary hover:underline font-sans text-sm uppercase tracking-widest">Clear all filters</button>
+                        </div>
+                    )}
+                </div>
             ) : (
                 <div className="flex flex-col gap-10 w-full mb-12">
                     {
@@ -58,4 +108,4 @@ const PaymentHistory = () => {
     );
 };
 
-export default PaymentHistory;
+export default PaymentHistory;
