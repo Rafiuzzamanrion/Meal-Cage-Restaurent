@@ -5,6 +5,8 @@ import useCart from "../../../Hooks/UseCart";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { useContext } from "react";
 import modernSwal from "../../../api/swalConfig";
+import { toast } from "react-toastify";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -32,8 +34,9 @@ const ProductDetails = () => {
     }, [id]);
 
     const handleAddToCart = (item) => {
+        const cartItem = { foodId: item._id, name: item.name, image: item.image, price: item.price, email: user?.email, category: item.category };
+
         if (user && user.email) {
-            const cartItem = { menuItemId: item._id, name: item.name, image: item.image, price: item.price, email: user.email }
             axiosSecure.post('/carts', cartItem)
                 .then(res => {
                     if (res.data._id || res.data.insertedId) {
@@ -41,18 +44,14 @@ const ProductDetails = () => {
                         toast.success('Food added to cart!', { theme: "dark" });
                     }
                 })
-        }
-        else {
-            modernSwal.fire({
-                title: 'Please login to order the food',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Login now!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    navigate('/login', { state: { from: location } })
-                }
-            })
+        } else {
+            const guestCart = JSON.parse(localStorage.getItem('guest-cart') || '[]');
+            // Add a temporary ID for guest items to support deletion
+            const guestItem = { ...cartItem, _id: Date.now().toString() };
+            guestCart.push(guestItem);
+            localStorage.setItem('guest-cart', JSON.stringify(guestCart));
+            refetch();
+            toast.success("Added to cart!", { theme: "dark" });
         }
     }
 

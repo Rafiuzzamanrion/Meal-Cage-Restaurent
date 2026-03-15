@@ -3,6 +3,7 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 import bg from '../../assets/others/authentication2.png'
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
@@ -10,12 +11,10 @@ import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 const SignUp = () => {
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const { createUser, updateUserProfile } = useContext(AuthContext)
-
-  // -----------------alert----------------------
-
 
   const handleSignUp = event => {
     event.preventDefault();
@@ -24,7 +23,6 @@ const SignUp = () => {
     const password = form.password.value;
     const name = form.name.value;
     const photo = form.photo.value;
-    console.log(email, password)
 
     // validation or pass expression
     if (!/^(?=.*[A-Z]).*$/.test(password)) {
@@ -44,8 +42,7 @@ const SignUp = () => {
       return;
     }
 
-
-
+    setLoading(true);
     createUser(email, password)
       .then(result => {
         const user = result.user;
@@ -69,17 +66,19 @@ const SignUp = () => {
                 }
 
               })
-
-
-
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       })
       .catch(error => {
         toast.error(error.message || "Email already in use or something went wrong!", { theme: "dark" });
         console.log(error)
+        setLoading(false);
       })
-
   }
   return (
 
@@ -128,7 +127,13 @@ const SignUp = () => {
                 <input type="password" name="password" placeholder="••••••••" className="input bg-dark-900/50 border-white/10 text-light focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans" required />
               </div>
               <div className="form-control mt-8">
-                <input className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 py-3 uppercase w-full cursor-pointer" type="submit" value="Sign Up" />
+                <button
+                  className={`btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 py-3 uppercase w-full ${loading ? 'btn-disabled opacity-50' : ''}`}
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? <span className="loading loading-spinner loading-sm"></span> : "Sign Up"}
+                </button>
               </div>
 
               <p className="text-center mt-4 text-light/70 font-sans text-sm">Already have an account? <Link className='text-primary font-bold hover:underline tracking-wide' to='/login'>Login</Link></p>

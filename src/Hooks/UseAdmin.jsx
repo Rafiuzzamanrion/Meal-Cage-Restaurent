@@ -1,32 +1,22 @@
-import {useContext} from "react";
-import {AuthContext} from "../Providers/AuthProvider";
-import {useQuery} from "@tanstack/react-query";
-import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../Providers/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
+import UseAxiosSecure from "./UseAxiosSecure";
 
 
 const UseAdmin = () => {
-    const {user,loading} = useContext(AuthContext);
-    
-    // ========= for jwt ==========
-    const token = localStorage.getItem('access-token')
-    
-    // ======= here data is destructured to a cart =[] array ======== if we want,we can use data directly by using map function
+    const { user, loading } = useContext(AuthContext);
+    const [axiosSecure] = UseAxiosSecure();
 
-    // ===== here we load specific data by filtering email =========
-    const {data: isAdmin,isLoading:isAdminLoading } = useQuery({
-        queryKey: ['isAdmin',user?.email],
-        enabled:!loading,
+    const { data: isAdmin, isLoading: isAdminLoading } = useQuery({
+        queryKey: ['isAdmin', user?.email],
+        enabled: !loading && !!user?.email,
         queryFn: async () => {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users/admin/${user?.email}`,{
-                headers:{authorization:`bearer ${token}`}
-            })
-
+            const res = await axiosSecure.get(`/users/admin/${user?.email}`)
             return res.data.admin;
-      },
-});
-    return [isAdmin,isAdminLoading]
-
-
+        },
+    });
+    return [isAdmin, isAdminLoading]
 };
 
 export default UseAdmin;

@@ -10,15 +10,24 @@ const AdminRoutes = ({ children }) => {
     const { user, loading } = useContext(AuthContext);
     const [isAdmin, isAdminLoading] = UseAdmin();
     const location = useLocation();
-    if (loading || isAdminLoading) {
+
+    if (loading) {
         return <Loader />
     }
 
-    if (user && isAdmin) {
+    if (!user) {
+        return <Navigate to={'/'} state={{ from: location }} replace></Navigate>
+    }
+
+    if (isAdminLoading) {
+        return <Loader />
+    }
+
+    if (isAdmin) {
         return children;
     }
-    else return <Navigate to={'/'} state={{ from: location }} replace></Navigate>
 
+    return <Navigate to={'/'} state={{ from: location }} replace></Navigate>
 };
 
 export default AdminRoutes;

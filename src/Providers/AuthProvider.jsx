@@ -20,17 +20,14 @@ const AuthProvider = ({ children }) => {
 
 
   const createUser = (email, password) => {
-    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const logInUser = (email, password) => {
-    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logOut = () => {
-    setLoading(true);
     return signOut(auth);
   };
 
@@ -41,7 +38,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const googleSignIn = () => {
-    setLoading(true);
     return signInWithPopup(auth, provider);
   }
 
@@ -73,9 +69,14 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/jwt`, { email: currentUser.email, })
           .then(data => {
-
             // ======= token is set to local storage ========
             localStorage.setItem('access-token', data.data.token)
+          })
+          .catch(error => {
+            console.error("JWT ERROR:", error);
+            localStorage.removeItem('access-token');
+          })
+          .finally(() => {
             setLoading(false);
           })
       }
@@ -92,7 +93,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={authInfo}>
-      {loading ? <Loader /> : children}
+      {children}
     </AuthContext.Provider>
   );
 };
