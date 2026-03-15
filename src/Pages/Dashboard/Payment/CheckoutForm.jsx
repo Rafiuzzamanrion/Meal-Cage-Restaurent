@@ -20,28 +20,26 @@ const CheckoutForm = ({ price, cart }) => {
   const [clientSecret, setClientSecret] = useState();
 
   useEffect(() => {
-    axiosSecure.post("/create-payment-intent", {
-      price
-    })
-
-      .then((res) => {
-        console.log(res.data.clientSecret);
-        setClientSecret(res.data.clientSecret);
-      })
-      .catch((error) => {
-        console.error("Axios Error:", error);
-      });
+    if (price > 0) {
+      axiosSecure.post("/create-payment-intent", { price })
+        .then((res) => {
+          setClientSecret(res.data.clientSecret);
+        })
+        .catch((error) => {
+          console.error("Payment Intent Error:", error);
+          toast.error("Failed to initialize payment.", { theme: "dark" });
+        });
+    }
   }, [axiosSecure, price]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !clientSecret) {
       return;
     }
 
     const card = elements.getElement(CardElement);
-    console.log(card);
     if (card === null) {
       return;
     }
@@ -52,61 +50,49 @@ const CheckoutForm = ({ price, cart }) => {
     });
 
     if (error) {
-      console.log("error", error);
       toast.error(error.message, { theme: "dark" });
-    } else {
-      console.log("payment method", paymentMethod);
+      return;
     }
 
-    const { paymentIntent, error: confirmError } =
-      await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: card,
-          billing_details: {
-            email: user?.email || "unknown",
-            name: user?.displayName || "anonymous",
-          },
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          email: user?.email || "unknown",
+          name: user?.displayName || "anonymous",
         },
-      });
+      },
+    });
+
     if (confirmError) {
-      console.log(confirmError)
       toast.error(confirmError.message, { theme: "dark" });
+      return;
     }
+
     if (paymentIntent.status === 'succeeded') {
-
-      toast.success('Payment succeeded!', { theme: "dark" });
-
       const payment = {
-        email: user?.email, transactionId: paymentIntent.id,
+        email: user?.email,
+        transactionId: paymentIntent.id,
         price,
-        date: Date(),
-        status: 'service pending',
+        date: new Date().toISOString(),
+        status: 'paid',
         quantity: cart.length,
         itemsName: cart.map(item => item.name),
         cartItems: cart.map(item => item._id),
-        foodId: cart.map(item => item.foodId),
+        foodId: cart.map(item => item.foodId || item.menuItemId), // Support both for safety
       }
 
       axiosSecure.post("/payments", payment)
         .then(res => {
           if (res.data.insertResult.insertedId) {
-            if (res.data.insertResult.insertedId) {
-              toast.success('Payment details saved!', { theme: "dark" });
-            }
+            toast.success('Payment succeeded and order recorded!', { theme: "dark" });
           }
         })
-
-
+        .catch(err => {
+          console.error("Payment Saving Error:", err);
+          toast.error("Payment succeeded but failed to save order details. Please contact support.", { theme: "dark" });
+        });
     }
-
-
-
-
-
-
-
-
-
   };
 
   return (
