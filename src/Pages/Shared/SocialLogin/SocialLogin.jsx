@@ -49,11 +49,15 @@ const SocialLogin = () => {
     <div>
       <div>
         <div className="text-center my-3">OR</div>
-        <div className="text-center"><button onClick={handleGoogleLogin} className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-dark-900 transition-all duration-300 rounded-none px-8"> <div className="avatar">
-          <div className="w-8 rounded-full">
-            <img src={google} />
-          </div>
-        </div></button></div>
+        <div className="text-center">
+          <button type="button" onClick={handleGoogleLogin} className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-dark-900 transition-all duration-300 rounded-none px-8"> 
+            <div className="avatar">
+              <div className="w-8 rounded-full">
+                <img src={google} alt="Google sign in" />
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   );
