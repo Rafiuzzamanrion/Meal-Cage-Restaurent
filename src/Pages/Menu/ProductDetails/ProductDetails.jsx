@@ -62,7 +62,7 @@ const ProductDetails = () => {
     if (!food) {
         return <div className="min-h-screen bg-dark-900 flex flex-col justify-center items-center">
             <h2 className="text-3xl font-serif text-light mb-4">Product Not Found</h2>
-            <button onClick={() => navigate(-1)} className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-dark-900 rounded-none tracking-widest px-8">Go Back</button>
+            <button onClick={() => navigate(-1)} className="btn-luxury px-8">Go Back</button>
         </div>;
     }
 
@@ -126,7 +126,7 @@ const ProductDetails = () => {
                             <div className="flex flex-col sm:flex-row gap-4 items-center">
                                 <button
                                     onClick={() => handleAddToCart(food)}
-                                    className="w-full btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 py-3 uppercase text-lg"
+                                    className="btn-luxury w-full py-3 text-lg"
                                 >
                                     Add to Cart
                                 </button>

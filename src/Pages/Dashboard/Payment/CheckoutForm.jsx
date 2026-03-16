@@ -182,7 +182,7 @@ const CheckoutForm = ({ price, cart }) => {
 
           <div className="mt-auto flex justify-end">
             <button
-              className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 py-4 uppercase w-full md:w-auto h-auto min-h-0 text-lg shadow-lg hover:shadow-primary/20"
+              className="btn-luxury w-full md:w-auto h-auto min-h-0 text-lg shadow-lg"
               type="submit"
               disabled={!stripe || !clientSecret}
             >

@@ -3,6 +3,7 @@ import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import UseMenu from "../../../Hooks/UseMenu";
 import modernSwal from "../../../api/swalConfig";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure.jsx";
 
 const ManageCard = ({ item }) => {
   const { name, image, price, _id } = item;
@@ -55,14 +56,14 @@ const ManageCard = ({ item }) => {
           <Link
             to={`/dashboard/updateItem/${_id}`}
             title="Edit Item"
-            className="btn btn-circle btn-outline border-primary/50 text-primary hover:bg-primary hover:text-dark-900 hover:border-primary transition-all duration-300 shadow-md"
+            className="btn-luxury-circle !border-primary/50 !text-primary hover:!border-primary shadow-md"
           >
             <FaEdit size={22} />
           </Link>
           <button
             onClick={() => handleDelete(_id)}
             title="Delete Item"
-            className="btn btn-circle btn-outline border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-300 shadow-md"
+            className="btn-luxury-circle !border-red-500/50 !text-red-500 hover:!bg-red-500 hover:!text-white hover:!border-red-500 shadow-md"
           >
             <RiDeleteBin6Line size={24} />
           </button>

@@ -73,10 +73,7 @@ const BookingCard = ({ booking }) => {
                     <button
                         onClick={handleDeliver}
                         disabled={currentStatus === 'delivered' || delivering}
-                        className={`btn rounded-none w-full uppercase tracking-widest font-sans transition-all duration-300 ${currentStatus === 'delivered'
-                            ? 'btn-disabled border-green-500/30 text-green-400 bg-green-500/10 cursor-not-allowed'
-                            : 'btn-outline border-primary text-primary hover:bg-primary hover:text-dark-900'
-                            }`}
+                        className={`btn-luxury w-full ${currentStatus === 'delivered' ? 'opacity-50 !border-green-500/30 !text-green-400 !bg-green-500/10' : ''}`}
                     >
                         {delivering ? <span className="loading loading-spinner loading-sm" /> : currentStatus === 'delivered' ? '✓ Delivered' : 'Deliver'}
                     </button>

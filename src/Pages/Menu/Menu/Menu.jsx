@@ -112,7 +112,7 @@ const Menu = () => {
                     <p className="text-light/60 font-sans tracking-wide mb-8">No menu items match the selected dietary filter.</p>
                     <button
                         onClick={() => setActiveFilter('all')}
-                        className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-8 uppercase"
+                        className="btn-luxury px-8"
                     >
                         View All Items
                     </button>

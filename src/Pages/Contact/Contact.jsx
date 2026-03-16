@@ -94,8 +94,8 @@ const Contact = () => {
                             </div>
 
                             <button type="submit" disabled={sending}
-                                className="w-full btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 py-3 uppercase">
-                                {sending ? <span className="loading loading-spinner loading-sm" /> : 'Send Inquiry'}
+                                className="btn-luxury w-full py-3">
+                                {sending ? <span className="loading loading-spinner loading-sm text-primary" /> : 'Send Inquiry'}
                             </button>
 
                         </form>

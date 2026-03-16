@@ -129,7 +129,7 @@ const Rewards = () => {
                         <button
                             onClick={handleRedeem}
                             disabled={redeeming || points < 1}
-                            className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 w-full md:w-auto px-8 uppercase flex items-center gap-2"
+                            className="btn-luxury px-8 flex items-center gap-2"
                         >
                             <FaGift /> {redeeming ? 'Redeeming...' : 'Redeem Points'}
                         </button>

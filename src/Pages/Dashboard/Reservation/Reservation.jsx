@@ -116,7 +116,7 @@ const Reservation = () => {
           </div>
           <div className="flex justify-center mt-6">
             <button
-              className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 py-3 uppercase w-full md:w-1/2"
+              className="btn-luxury w-full md:w-1/2 py-3"
               type="submit"
             >
               Confirm Reservation

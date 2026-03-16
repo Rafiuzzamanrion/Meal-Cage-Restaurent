@@ -161,3 +161,79 @@ html.has-scroll-dragging {
 .swal2-backdrop-show {
   @apply backdrop-blur-sm bg-black/60 !important;
 }
+
+/* Luxury Animated Button */
+.btn-luxury {
+  @apply relative overflow-hidden border border-primary/50 text-primary font-sans font-bold uppercase transition-all duration-500 inline-flex items-center justify-center bg-transparent px-8 py-3 rounded-none;
+  letter-spacing: 0.2em;
+  z-index: 1;
+}
+
+/* Default dark background */
+.btn-luxury::after {
+  content: '';
+  @apply absolute inset-0 bg-dark-900/80 transition-all duration-300;
+  z-index: -2;
+}
+
+/* Hover gold slider */
+.btn-luxury::before {
+  content: '';
+  @apply absolute top-0 left-0 h-full w-0 bg-primary transition-all duration-300 ease-out;
+  z-index: -1;
+}
+
+.btn-luxury:hover {
+  @apply border-primary text-dark-900;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+.btn-luxury:hover::before {
+  width: 100%;
+}
+
+.btn-luxury:disabled,
+.btn-luxury.btn-disabled {
+  @apply opacity-50 cursor-not-allowed shadow-none text-primary border-primary/50;
+}
+
+.btn-luxury:disabled:hover,
+.btn-luxury.btn-disabled:hover {
+  @apply text-primary bg-transparent;
+}
+
+.btn-luxury:disabled::before,
+.btn-luxury.btn-disabled::before {
+  @apply hidden;
+}
+
+/* Luxury Circle Button Variant */
+.btn-luxury-circle {
+  @apply relative overflow-hidden border border-primary/50 text-primary transition-all duration-500 flex items-center justify-center bg-transparent rounded-full w-12 h-12;
+  z-index: 1;
+}
+
+.btn-luxury-circle::after {
+  content: '';
+  @apply absolute inset-0 bg-dark-900/80 transition-all duration-500 rounded-full;
+  z-index: -2;
+}
+
+.btn-luxury-circle::before {
+  content: '';
+  @apply absolute top-0 left-0 h-full w-0 bg-primary transition-all duration-500 ease-out;
+  z-index: -1;
+}
+
+.btn-luxury-circle:hover {
+  @apply border-primary text-dark-900;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.btn-luxury-circle:hover::before {
+  width: 100%;
+}
+
+.btn-luxury-circle.btn-sm {
+  @apply w-10 h-10;
+}

@@ -57,7 +57,7 @@ const FoodCard = ({ item }) => {
           <p className="font-sans text-light/60 text-sm leading-relaxed tracking-wide flex-grow mb-8">{recipe}</p>
 
           <div className="mt-auto">
-            <button onClick={() => handleAddToCart(item)} className="w-full btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest font-bold uppercase transition-all duration-300">
+            <button onClick={() => handleAddToCart(item)} className="btn-luxury w-full">
               Add to Cart
             </button>
           </div>

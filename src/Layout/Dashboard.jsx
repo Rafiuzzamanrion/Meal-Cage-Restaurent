@@ -30,7 +30,7 @@ const Dashboard = () => {
         <div className="drawer-content flex flex-col items-center justify-start min-h-screen p-4 md:p-8 lg:p-12 relative">
           <label
             htmlFor="my-drawer-2"
-            className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 tracking-widest uppercase lg:hidden mt-5 mb-8 align-self-start absolute top-4 left-4 z-50"
+            className="btn-luxury lg:hidden mt-5 mb-8 align-self-start absolute top-4 left-4 z-50 px-6 py-2"
           >
             <GiHamburgerMenu size={24} className="mr-2" /> MENU
           </label>

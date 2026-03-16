@@ -21,7 +21,7 @@ const MyCart = () => {
                 </Helmet>
                 <NoData heading="Your cart is empty" text="Browse our menu to find your next delicious meal!" />
                 <Link to="/order/salad">
-                    <button className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-dark-900 mt-6 tracking-widest uppercase rounded-none">
+                    <button className="btn-luxury mt-6 px-8">
                         Browse Menu
                     </button>
                 </Link>
@@ -44,7 +44,7 @@ const MyCart = () => {
                         <h3 className="text-2xl font-serif text-light tracking-wide">Total Price: <span className="text-primary font-sans font-bold uppercase">${total.toFixed(2)}</span></h3>
                     </div>
                     <Link to="/dashboard/checkout">
-                        <button className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-8 uppercase flex items-center gap-2">
+                        <button className="btn-luxury px-8 flex items-center gap-2">
                             <BiDollarCircle size={22} /> Proceed to Checkout <BiRightArrowAlt size={22} />
                         </button>
                     </Link>

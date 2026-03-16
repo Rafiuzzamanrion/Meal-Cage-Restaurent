@@ -85,7 +85,7 @@ const NavBar = () => {
               {!user && (
                 <li className="list-none mt-8 w-full text-center px-4">
                   <Link to="/login" onClick={closeMenu}>
-                    <button className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest uppercase w-full py-4 text-lg">
+                    <button className="btn-luxury w-full !py-2 !text-base">
                       LOGIN
                     </button>
                   </Link>
@@ -152,7 +152,7 @@ const NavBar = () => {
                 </div>
                 <div className="card-actions mt-2">
                   <Link to="/cart" className="w-full">
-                    <button className="btn btn-outline btn-sm rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 w-full font-sans tracking-widest font-bold uppercase transition-all duration-300">View Full Cart</button>
+                    <button className="btn-luxury w-full !py-2 !text-xs">View Full Cart</button>
                   </Link>
                 </div>
               </div>
@@ -169,14 +169,14 @@ const NavBar = () => {
 
               <button
                 onClick={handleLogOut}
-                className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 uppercase"
+                className="btn-luxury !py-2 !px-4 !text-xs mx-2"
               >
                 LOGOUT
               </button>
             </>
           ) : (
             <Link to="/login">
-              <button className="btn btn-sm btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 uppercase">
+              <button className="btn-luxury !py-2 !px-4 !text-xs mx-2">
                 LOGIN
               </button>
             </Link>

@@ -18,7 +18,7 @@ const MenuCategory = ({ items, img, title, buttonName }) => {
                     </div>
                 )}
                 <div className="flex items-center justify-center pb-8 rounded-b-xl">
-                    <Link to={`/order/${title}`}><button className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-8 uppercase">{buttonName}</button></Link>
+                    <Link to={`/order/${title}`}><button className="btn-luxury px-8">{buttonName}</button></Link>
                 </div>
             </div>
         </div>

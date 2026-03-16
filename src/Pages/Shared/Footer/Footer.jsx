@@ -56,7 +56,7 @@ const Footer = () => {
             <button
               type="submit"
               disabled={subscribing}
-              className="absolute top-0 right-0 h-full px-4 text-primary hover:text-light transition-colors flex items-center justify-center"
+              className="absolute top-0 right-0 h-full px-5 text-dark-900 bg-primary hover:bg-light transition-all flex items-center justify-center font-bold tracking-widest shadow-[0_0_15px_rgba(212,175,55,0.3)] hover:scale-105"
             >
               {subscribing ? <span className="loading loading-spinner loading-xs" /> : <FaPaperPlane />}
             </button>

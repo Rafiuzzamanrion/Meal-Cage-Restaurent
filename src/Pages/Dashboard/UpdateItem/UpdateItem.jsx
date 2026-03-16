@@ -169,12 +169,12 @@ const UpdateItem = () => {
                         <button
                             onClick={() => navigate(-1)}
                             type="button"
-                            className="btn btn-outline rounded-none border-white/20 text-light/60 hover:bg-white/10 hover:text-light font-sans tracking-widest transition-all duration-300 px-12 uppercase"
+                            className="btn-luxury !border-white/20 !text-light/60 hover:!text-dark-900 px-12"
                         >
                             Cancel
                         </button>
                         <button
-                            className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 uppercase"
+                            className="btn-luxury px-12"
                             type="submit"
                         >
                             Update Item

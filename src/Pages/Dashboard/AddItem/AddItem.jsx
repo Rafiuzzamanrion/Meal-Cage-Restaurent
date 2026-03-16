@@ -2,6 +2,8 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import modernSwal from "../../../api/swalConfig";
+const img_hosting_token = import.meta.env.VITE_IMAGE_UPLOAD_TOKEN;
+import { toast } from "react-toastify";
 
 const AddItem = () => {
   const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
@@ -136,7 +138,7 @@ const AddItem = () => {
 
           <div className="flex justify-center mt-8">
             <button
-              className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 uppercase"
+              className="btn-luxury px-12"
               type="submit"
             >
               Add Item

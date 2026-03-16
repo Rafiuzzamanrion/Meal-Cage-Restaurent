@@ -131,11 +131,11 @@ const SignUp = () => {
               </div>
               <div className="form-control mt-8">
                 <button
-                  className={`btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 py-3 uppercase w-full ${loading ? 'btn-disabled opacity-50' : ''}`}
+                  className={`btn-luxury w-full ${loading ? 'btn-disabled' : ''}`}
                   type="submit"
                   disabled={loading}
                 >
-                  {loading ? <span className="loading loading-spinner loading-sm"></span> : "Sign Up"}
+                  {loading ? <span className="loading loading-spinner loading-sm text-primary"></span> : "Sign Up"}
                 </button>
               </div>
 

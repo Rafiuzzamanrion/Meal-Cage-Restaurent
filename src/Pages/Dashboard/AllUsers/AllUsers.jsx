@@ -154,7 +154,7 @@ const AllUsers = () => {
               </div>
               <div className="flex justify-center relative z-10">
                 <input
-                  className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 px-12 uppercase w-full cursor-pointer"
+                  className="btn-luxury px-12 w-full cursor-pointer"
                   type="submit"
                   value="Grant Access"
                 />
@@ -189,20 +189,20 @@ const AllUsers = () => {
                       <button
                         onClick={() => handleMakeAdmin(user)}
                         title="Make Admin"
-                        className="btn btn-sm btn-outline rounded-md border-primary text-primary hover:bg-primary hover:text-dark-900 transition-colors"
+                        className="btn-luxury !py-2 !px-3 !text-[10px]"
                       >
                         <FaUserShield size={18}></FaUserShield>
                       </button>
                     )}
                   </td>
                   <td className="text-center">
-                    <button
-                      onClick={() => handleDelete(user)}
-                      title="Delete User"
-                      className="btn btn-circle btn-sm btn-outline border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
-                    >
-                      <RiDeleteBin6Line size={18} />
-                    </button>
+                      <button
+                        onClick={() => handleDelete(user)}
+                        title="Delete User"
+                        className="btn-luxury-circle btn-sm !border-red-500/50 !text-red-500 hover:!bg-red-500 hover:!text-white"
+                      >
+                        <RiDeleteBin6Line size={18} />
+                      </button>
                   </td>
                 </tr>
               ))}

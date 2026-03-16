@@ -82,11 +82,11 @@ const Login = () => {
 
               <div className="form-control mt-6">
                 <button
-                  className={`btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest transition-all duration-300 py-3 uppercase w-full ${loading ? 'btn-disabled opacity-50' : ''}`}
+                  className={`btn-luxury w-full py-3 text-lg ${loading ? 'btn-disabled opacity-50' : ''}`}
                   type="submit"
                   disabled={loading}
                 >
-                  {loading ? <span className="loading loading-spinner loading-sm"></span> : "Sign In"}
+                  {loading ? <span className="loading loading-spinner loading-sm text-primary"></span> : "Sign In"}
                 </button>
               </div>
 

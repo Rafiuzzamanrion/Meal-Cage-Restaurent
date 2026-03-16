@@ -32,7 +32,7 @@ const Checkout = () => {
             <div className="w-full text-center mt-24">
                 <h2 className="text-3xl font-serif text-light">Your cart is empty</h2>
                 <Link to="/order/salad">
-                    <button className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-dark-900 mt-6 tracking-widest uppercase rounded-none">
+                    <button className="btn-luxury mt-6 px-8">
                         Browse Menu
                     </button>
                 </Link>
@@ -133,7 +133,7 @@ const Checkout = () => {
                             {errors.phone && <span className="text-red-500 text-sm mt-1">Phone is required</span>}
                         </div>
 
-                        <button type="submit" className="btn btn-outline rounded-none border-primary text-primary hover:bg-primary hover:text-dark-900 font-sans tracking-widest uppercase flex items-center gap-2 mt-auto">
+                        <button type="submit" className="btn-luxury flex items-center gap-2 mt-auto w-full justify-center">
                             Proceed to Payment <BiRightArrowAlt size={22} />
                         </button>
                     </form>

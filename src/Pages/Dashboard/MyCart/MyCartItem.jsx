@@ -59,7 +59,7 @@ const MyCartItem = ({ item }) => {
         <div className="mt-4 sm:mt-0 opacity-80 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => handleDelete(_id)}
-            className="btn btn-circle btn-outline border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
+            className="btn-luxury-circle !border-red-500/50 !text-red-500 hover:!bg-red-500 hover:!text-white hover:!border-red-500"
             title="Delete item"
           >
             <RiDeleteBin6Line size={24} />

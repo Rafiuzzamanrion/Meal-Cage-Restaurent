@@ -79,7 +79,7 @@ const GiftCards = () => {
                         Looking to reward your team or impress clients? We offer exclusive corporate gifting packages.
                         Contact our hospitality team to curate the perfect culinary reward.
                     </p>
-                    <button className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-dark-900 rounded-none px-8 font-sans tracking-widest uppercase transition-all duration-300">
+                    <button className="btn-luxury">
                         Contact Us
                     </button>
                 </div>
