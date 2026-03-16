@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import avatar from "../../../assets/avatar2.jpg";
@@ -11,6 +11,20 @@ import UseAdmin from "../../../Hooks/UseAdmin";
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    
+    // Cleanup function to ensure scroll is restored
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isMenuOpen]);
 
   // ===== this is come from UseCart hook =========
   const [cart] = UseCart();
@@ -101,24 +115,29 @@ const NavBar = () => {
           {/* Hamburger Menu Icon */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="btn btn-ghost lg:hidden hover:text-primary transition-colors"
+            className="btn btn-ghost lg:hidden hover:text-primary transition-colors p-2"
           >
             <FaBars className="h-5 w-5" />
           </button>
-
-          {/* Logo */}
-          <Link to={'/'} className="btn btn-ghost normal-case text-2xl font-serif font-bold tracking-wider hover:text-primary transition-colors flex items-center gap-3">
+          
+          {/* Logo - Desktop only in Start */}
+          <Link to={'/'} className="hidden lg:flex btn btn-ghost normal-case text-2xl font-serif font-bold tracking-wider hover:text-primary transition-colors items-center gap-3">
             <span className="text-primary italic">Meal</span> Cage
           </Link>
         </div>
 
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 font-sans text-sm tracking-widest font-medium uppercase gap-2">
+        <div className="navbar-center flex">
+          {/* Logo - Mobile only in Center */}
+          <Link to={'/'} className="lg:hidden flex btn btn-ghost normal-case text-lg xs:text-xl font-serif font-bold tracking-tight hover:text-primary transition-colors items-center gap-1 px-1">
+            <span className="text-primary italic">Meal</span> Cage
+          </Link>
+          
+          <ul className="menu menu-horizontal hidden lg:flex px-1 font-sans text-sm tracking-widest font-medium uppercase gap-2">
             {renderNavItems()}
           </ul>
         </div>
 
-        <div className="navbar-end gap-4 pr-4">
+        <div className="navbar-end gap-1 md:gap-4 pr-1 md:pr-4">
           {/* Cart Dropdown - Public */}
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle hover:text-primary transition-colors duration-300 relative group">
@@ -161,18 +180,16 @@ const NavBar = () => {
 
           {user ? (
             <>
-
-
               <button
                 onClick={handleLogOut}
-                className="btn-luxury !py-2 !px-4 !text-xs mx-2"
+                className="btn-luxury !py-1 !px-2 md:!py-2 md:!px-4 !text-[10px] md:!text-xs mx-1 md:mx-2 whitespace-nowrap"
               >
                 LOGOUT
               </button>
             </>
           ) : (
             <Link to="/login">
-              <button className="btn-luxury !py-2 !px-4 !text-xs mx-2">
+              <button className="btn-luxury !py-1 !px-2 md:!py-2 md:!px-4 !text-[10px] md:!text-xs mx-1 md:mx-2 whitespace-nowrap">
                 LOGIN
               </button>
             </Link>
