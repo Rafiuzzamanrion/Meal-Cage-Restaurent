@@ -67,16 +67,16 @@ const AuthProvider = ({ children }) => {
       // ===== get and set jwt =========
       // ======= using axios instead of fetch =======
       if (currentUser) {
+        setLoading(true);
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/jwt`, { email: currentUser.email, })
           .then(data => {
             // ======= token is set to local storage ========
             localStorage.setItem('access-token', data.data.token)
+            setLoading(false);
           })
           .catch(error => {
             console.error("JWT ERROR:", error);
             localStorage.removeItem('access-token');
-          })
-          .finally(() => {
             setLoading(false);
           })
       }

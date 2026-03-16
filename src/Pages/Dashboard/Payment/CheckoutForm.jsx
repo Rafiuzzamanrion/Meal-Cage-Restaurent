@@ -1,21 +1,20 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-
-import { toast } from "react-toastify";
-
+import Swal from "sweetalert2";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import axios from "axios";
-
-
+import { toast } from "react-toastify";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
-
+import UseCart from "../../../Hooks/UseCart";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = ({ price, cart }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useContext(AuthContext);
   const [axiosSecure] = UseAxiosSecure();
-
+  const [cartData, refetch] = UseCart();
+  const navigate = useNavigate();
 
   const [clientSecret, setClientSecret] = useState();
 
@@ -84,8 +83,16 @@ const CheckoutForm = ({ price, cart }) => {
 
       axiosSecure.post("/payments", payment)
         .then(res => {
-          if (res.data.insertResult.insertedId) {
-            toast.success('Payment succeeded and order recorded!', { theme: "dark" });
+          if (res.data.insertResult.insertedId || res.data.insertResult._id) {
+            refetch();
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Payment Successful!",
+              showConfirmButton: false,
+              timer: 1500
+            });
+            navigate('/dashboard/paymentHistory');
           }
         })
         .catch(err => {
