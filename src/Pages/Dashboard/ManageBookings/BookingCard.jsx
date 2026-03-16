@@ -1,6 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import modernSwal from "../../../api/swalConfig";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure.jsx";
+import {useQueryClient} from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const BookingCard = ({ booking }) => {
     const { _id, email, price, quantity, guests, status } = booking;
