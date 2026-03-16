@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
-import { FaSackDollar, FaUser, FaCartShopping, FaStar, FaRepeat, FaFire } from 'react-icons/fa6';
+import { FaSackDollar, FaUser, FaCartShopping, FaStar, FaRepeat, FaFire, FaCommentDots } from 'react-icons/fa6';
 import { HiTemplate } from "react-icons/hi";
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import { MdTableRestaurant, MdPendingActions, MdVerified, MdTrendingUp } from "react-icons/md";
@@ -123,10 +123,8 @@ const AdminHome = () => {
         <StatCard icon={FaUser} label="Total Customers" value={states.users ?? 0} delay="600" />
         <StatCard icon={GiForkKnifeSpoon} label="Menu Items" value={states.menuItems ?? 0} delay="650" />
         <StatCard icon={FaCartShopping} label="Active Carts" value={states.cartItems ?? 0} delay="700" />
-        <StatCard icon={FaStar} label="Avg Rating" value={`${states.avgRating ?? 0} ★`} sub={`${states.reviews ?? 0} reviews`} delay="750" />
-        {states.mostPopularDish && (
-          <StatCard icon={FaFire} label="Top Dish" value={states.mostPopularDish.name} sub={`${states.mostPopularDish.orders} orders`} delay="800" highlight />
-        )}
+        <StatCard icon={FaCommentDots} label="Total Reviews" value={states.reviews ?? 0} delay="750" />
+        <StatCard icon={FaStar} label="Avg Rating" value={`${states.avgRating ?? 0} ★`} delay="800" highlight />
       </div>
 
       {/* ── Reservations KPIs ── */}
@@ -134,7 +132,7 @@ const AdminHome = () => {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         <StatCard icon={MdTableRestaurant} label="Total Bookings" value={states.reservations ?? 0} delay="600" />
         <StatCard icon={MdPendingActions} label="Pending" value={states.pendingReservations ?? 0} delay="650" />
-        <StatCard icon={MdVerified} label="Confirmed" value={states.confirmedReservations ?? 0} delay="700" />
+        <StatCard icon={MdVerified} label="Delivered" value={states.confirmedReservations ?? 0} delay="700" />
         <StatCard icon={FaRepeat} label="Confirm Rate" value={`${states.reservationConfirmRate ?? 0}%`} delay="750" highlight />
       </div>
 
