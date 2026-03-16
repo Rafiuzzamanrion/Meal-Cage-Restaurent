@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
@@ -12,7 +12,10 @@ const SignUp = () => {
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
 
   const { createUser, updateUserProfile } = useContext(AuthContext)
 
@@ -60,9 +63,9 @@ const SignUp = () => {
             })
               .then(res => res.json())
               .then(data => {
-                if (data.insertedId) {
-                  toast.success("Profile updated and synced!", { theme: "dark" });
-                  navigate('/')
+                if (data.insertedId || data._id || data.message === 'user already exists') {
+                  toast.success("Account created successfully!", { theme: "dark" });
+                  navigate(from, { replace: true })
                 }
 
               })
