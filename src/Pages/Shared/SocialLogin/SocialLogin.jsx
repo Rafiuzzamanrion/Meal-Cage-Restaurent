@@ -26,7 +26,7 @@ const SocialLogin = () => {
         })
           .then(res => res.json())
           .then(data => {
-            if (data.insertedId) {
+            if (data.insertedId || data._id) {
               toast.success('Successfully created an account!', { theme: "dark" });
               navigate(from, { replace: true });
             }

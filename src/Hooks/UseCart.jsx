@@ -1,26 +1,19 @@
-
 import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react';
 import { AuthContext } from '../Providers/AuthProvider';
-import axios from 'axios';
-// import UseAxiosSecure from './UseAxiosSecure';
+import UseAxiosSecure from './UseAxiosSecure'; // Import this
 
 
 const UseCart = () => {
-    const { user } = useContext(AuthContext);
-    // ========= for jwt ==========
-    const token = localStorage.getItem('access-token')
-
-
-    // ======= here data is destructured to a cart =[] array ======== if we want,we can use data directly by using map function
-
+    const { user, loading } = useContext(AuthContext);
+    const [axiosSecure] = UseAxiosSecure(); 
+    
     const { refetch, data: cart = [] } = useQuery({
         queryKey: ['carts', user?.email],
+        enabled: !loading && !!user?.email && !!localStorage.getItem('access-token'),
         queryFn: async () => {
             if (user?.email) {
-                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/carts?email=${user.email}`, {
-                    headers: { authorization: `bearer ${token}` }
-                })
+                const res = await axiosSecure.get(`/carts?email=${user.email}`)
                 return Array.isArray(res.data) ? res.data : [];
             } else {
                 return JSON.parse(localStorage.getItem('guest-cart') || '[]');
