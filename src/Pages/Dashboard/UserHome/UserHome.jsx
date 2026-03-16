@@ -4,6 +4,7 @@ import { AuthContext } from "../../../Providers/AuthProvider";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { FaSackDollar, FaStar, FaMedal, FaFire } from "react-icons/fa6";
 import { PiBowlFoodFill } from "react-icons/pi";
+import { HiTemplate } from "react-icons/hi";
 import { MdTableRestaurant, MdVerified } from "react-icons/md";
 import { BsCurrencyDollar } from "react-icons/bs";
 import {
@@ -197,10 +198,12 @@ const UserHome = () => {
           <SectionTitle><FaSackDollar className="text-primary" /> Your Spending</SectionTitle>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <StatCard icon={FaSackDollar} label="Total Spent" value={`$${parseFloat(totalSpent.toFixed(2))}`} delay="600" highlight />
-            <StatCard icon={PiBowlFoodFill} label="Items Ordered" value={totalQuantity} delay="650" />
+            <StatCard icon={HiTemplate} label="Total Orders" value={payment.length} delay="650" />
             <StatCard icon={BsCurrencyDollar} label="Avg Order Value" value={`$${avgOrderValue}`} delay="700" />
-            {topDish && (
+            {topDish ? (
               <StatCard icon={FaFire} label="Your Fav Dish" value={topDish[0]} sub={`${topDish[1]} orders`} delay="750" highlight />
+            ) : (
+              <StatCard icon={PiBowlFoodFill} label="Items Ordered" value={totalQuantity} delay="750" highlight />
             )}
           </div>
 
