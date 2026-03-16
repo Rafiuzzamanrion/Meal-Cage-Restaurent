@@ -25,7 +25,7 @@ import img6 from "../../../assets/home/06.png";
 
 const Banner = () => {
   return (
-    <section className="relative bg-dark-900 group">
+    <section className="relative bg-dark-900 group overflow-hidden">
       <Swiper
         modules={[Navigation, Pagination, A11y, Autoplay, EffectFade, Parallax]}
         effect="fade"

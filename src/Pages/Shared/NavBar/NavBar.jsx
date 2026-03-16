@@ -161,11 +161,7 @@ const NavBar = () => {
 
           {user ? (
             <>
-              <div className="avatar">
-                <div className="w-10 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2 transition-transform hover:scale-105">
-                  <img src={avatar} alt="User Avatar" />
-                </div>
-              </div>
+
 
               <button
                 onClick={handleLogOut}

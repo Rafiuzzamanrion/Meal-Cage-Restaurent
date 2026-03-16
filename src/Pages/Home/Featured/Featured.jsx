@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Featured = () => {
     return (
-        <section className="relative group">
+        <section className="relative group overflow-hidden">
             <Parallax
                 blur={{ min: -10, max: 10 }}
                 bgImage={featuredImg}

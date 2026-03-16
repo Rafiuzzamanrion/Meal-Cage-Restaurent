@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
   font-family: 'Inter', sans-serif;
   @apply bg-dark-900 text-light;
