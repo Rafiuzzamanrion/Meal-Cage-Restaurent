@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, ScrollRestoration } from "react-router-dom";
 import {
   FaShoppingCart,
   FaWallet,
@@ -15,7 +15,6 @@ import UseCart from "../Hooks/UseCart";
 import UseAdmin from "../Hooks/UseAdmin";
 import { BiSolidBook } from "react-icons/bi";
 import { HiTemplate } from "react-icons/hi";
-
 const Dashboard = () => {
   const [cart] = UseCart();
   // ========= TODO =========
@@ -24,6 +23,7 @@ const Dashboard = () => {
 
   return (
     <div className="bg-dark-900 min-h-screen text-light font-sans" data-aos="fade-in" data-aos-duration="800">
+      <ScrollRestoration />
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
